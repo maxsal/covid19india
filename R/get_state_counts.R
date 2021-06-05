@@ -21,8 +21,6 @@ get_state_counts <- function(
   d <- readr::read_csv(path,
                        col_types = cols())
 
-  data("pop")
-
   if (raw == FALSE) {
 
     d <- d %>%
