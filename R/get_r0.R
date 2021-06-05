@@ -3,6 +3,7 @@
 #' @return Pulls the time-series state-level testing data directly from covid19india.org. Expects a \code{daily_cases} column
 #' @keywords internal
 #' @import dplyr
+#' @import EpiEstim
 #' @importFrom janitor clean_names
 #' @examples
 #' \dontrun{
@@ -18,7 +19,7 @@ estR0_out <- function(dat) {
   res <- EpiEstim::estimate_R(
     incid = dat$daily_cases,
     method = "parametric_si",
-    config = make_config(list(
+    config = EpiEstim::make_config(list(
       mean_si             = 7,
       std_si              = 4.5,
       si_parametric_distr = "G",
