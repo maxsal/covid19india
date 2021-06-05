@@ -59,13 +59,21 @@ estR0_out <- function(dat) {
 
 get_r0 <- function(
   dat,
+  inc_var = daily_cases,
   daily_filter = 0,
   total_filter = 50,
   min_date     = "2020-03-23"
   ) {
 
+  message(paste0("calculating r0 using `", deparse(substitute(inc_var)),"` variable..."))
+
+  if ((deparse(substitute(inc_var)) %in% names(dat)) == FALSE) {
+    stop(paste0("Looking for ", deparse(substitute(inc_var)), " in data, but not found. ",
+                "Check if `inc_var` argument is correctly specified"))
+  }
+
   tmp_dat <- dat %>%
-    dplyr::filter(daily_cases > daily_filter & total_cases >= total_filter) %>%
+    dplyr::filter({{ inc_var }} > daily_filter & total_cases >= total_filter) %>%
     dplyr::group_by(place) %>%
     dplyr::mutate(
       ns = n()
@@ -75,7 +83,7 @@ get_r0 <- function(
 
   options(warn = -1)
   tmp_est <- tmp_dat %>%
-    dplyr::select(date, daily_cases, place) %>%
+    dplyr::select(date, daily_cases = {{ inc_var }}, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
       estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x))
