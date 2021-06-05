@@ -19,7 +19,7 @@ get_state_counts <- function(
 ) {
 
   d <- readr::read_csv(path,
-                       col_types = cols())
+                       col_types = readr::cols())
 
   if (raw == FALSE) {
 
