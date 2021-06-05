@@ -1,2 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-import(tidyverse, magrittr, janitor, EpiEstim)
+import(tidyverse, janitor, EpiEstim)
