@@ -37,7 +37,7 @@ state_tests <- get_state_tests()
 
 # estimate r0 ----------
 nat_count %>% get_r0()
-state_count %%> get_r0()
+state_count %>% get_r0()
 
 ```
 
