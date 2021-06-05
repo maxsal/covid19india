@@ -1,9 +1,9 @@
 #' Helper function for calculating R_0
 #' @param dat Input dataset
 #' @return Pulls the time-series state-level testing data directly from covid19india.org. Expects a \code{daily_cases} column
+#' @keywords internal
 #' @import dplyr
 #' @importFrom janitor clean_names
-#' @export
 #' @examples
 #' \dontrun{
 #' # used in get_r0() function
@@ -79,7 +79,7 @@ get_r0 <- function(
     dplyr::select(date, daily_cases, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
-      estR0 = purrr::map(data, ~covid19india::estR0_out(dat = .x))
+      estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x))
     ) %>%
     tidyr::unnest(estR0) %>%
     dplyr::select(-data) %>%

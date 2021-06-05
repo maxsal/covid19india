@@ -4,7 +4,6 @@
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import tidyverse
 #' @importFrom janitor clean_names
-#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' \dontrun{
