@@ -3,6 +3,8 @@
 #' @param raw Pull raw unaltered data. Defauls is FALSE
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import dplyr
+#' @import readr
+#' @import magrittr
 #' @importFrom janitor clean_names
 #' @export
 #' @examples
@@ -16,7 +18,7 @@ get_nat_counts <- function(
 ) {
 
   d <- readr::read_csv(path,
-                       col_types = cols())
+                       col_types = readr::cols())
 
   if (raw == FALSE) {
 
