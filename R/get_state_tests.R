@@ -16,7 +16,7 @@ get_state_testing <- function(
 ) {
 
   d <- suppressWarnings(readr::read_csv(path,
-                                        col_types = cols()))
+                                        col_types = dplyr::cols()))
 
   if (raw == FALSE) {
 

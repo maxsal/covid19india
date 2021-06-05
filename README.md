@@ -4,7 +4,15 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of covid19india is to ...
+`covid19india` is designed while working with data on COVID-19 in India. [covid19india.org](https://covid19india.org) is 
+a data resource with APIs available. It is updated daily and provides count, testing, and vaccine data 
+at the national, state, and district level. This package eases the process for R users to obtain data 
+ready for analysis in hopes of democratizing data science and speed up public health research.
+
+**The package is under active development.** After creating functions for pulling data,
+additional functions to calculate *basic* public health metrics and data visualizations will be added.
+
+Please share thoughts and comments with me [@mmsalva@umich.edu](mailto:mmsalva@umich.edu) or [@MaxSalTweers](twitter.com/MaxSalTweets)
 
 ## Installation
 
@@ -20,6 +28,9 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(covid19india)
-## basic example code
+
+nat_count   <- get_nat_counts()
+state_count <- get_state_counts()
+state_tests <- get_state_tests()
 ```
 

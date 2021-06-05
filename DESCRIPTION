@@ -1,11 +1,12 @@
 Package: covid19india
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Pulling clean data from covid10india.org
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: person("Max", "Salvatore", email = "mmsalva@umich.edu", role = c("aut", "cre"))
+Description: This package was designed while working with data on COVID-19 in India. covid19india.org is 
+    a data resource with APIs available. It is updated daily and provides count, testing, and vaccine data 
+    at the national, state, and district level. This package eases the process for R users to obtain data 
+    ready for analysis in hopes of ddemocratizing data science and speed up public health research.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -13,3 +14,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     magrittr
+    tidyverse
+    janitor
