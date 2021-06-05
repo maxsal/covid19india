@@ -2,15 +2,15 @@
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/case_time_series.csv
 #' @param raw Pull raw unaltered data. Defauls is FALSE
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
-#' @import dplyr
-#' @import readr
-#' @import magrittr
+#' @import tidyverse
 #' @importFrom janitor clean_names
 #' @export
 #' @examples
 #' \dontrun{
 #' get_nat_counts()
 #' }
+#'
+require(tidyverse)
 
 get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
