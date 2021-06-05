@@ -17,4 +17,4 @@ Imports:
     tidyverse (>= 1.0),
     janitor (>= 2.0),
     lifecycle
-Depends: R (>= 4.1)
+Depends: R (>= 3.6)
