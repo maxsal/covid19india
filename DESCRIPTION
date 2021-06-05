@@ -15,5 +15,6 @@ RoxygenNote: 7.1.1
 Imports: 
     tidyverse,
     janitor,
-    lifecycle
+    lifecycle,
+    magrittr
 Depends: R (>= 3.6)
