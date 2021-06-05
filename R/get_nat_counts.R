@@ -4,13 +4,13 @@
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import tidyverse
 #' @importFrom janitor clean_names
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' \dontrun{
 #' get_nat_counts()
 #' }
 #'
-require(tidyverse)
 
 get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
