@@ -67,6 +67,3 @@ get_state_counts <- function(
   return(d)
 
 }
-
-get_state_counts()
-
