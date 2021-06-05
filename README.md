@@ -2,7 +2,7 @@
 # covid19india
 
 <!-- badges: start -->
-`r lifecycle::badge("experimental")`
+![lifecycle](https://raw.githubusercontent.com/maxsal/covid19india/main/man/figures/lifecycle-experimental.svg)
 <!-- badges: end -->
 
 `covid19india` is designed while working with data on COVID-19 in India. [covid19india.org](https://covid19india.org) is 
