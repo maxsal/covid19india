@@ -23,6 +23,12 @@ You can install the development version of `covid19india` with:
 remotes::install_github("maxsal/covid19india")
 ```
 
+## Coming soon :movie_camera:
+
+- :chart_with_upwards_trend: Basic plotting
+- :house_with_garden: District-level data
+- :wrench: Improved function arguments
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
