@@ -9,10 +9,10 @@ a data resource with APIs available. It is updated daily and provides count, tes
 at the national, state, and district level. This package eases the process for R users to obtain data 
 ready for analysis in hopes of democratizing data science and speed up public health research.
 
-**The package is under active development.** After creating functions for pulling data,
+:warning: **The package is under active development.** :warning: After creating functions for pulling data,
 additional functions to calculate *basic* public health metrics and data visualizations will be added.
 
-Please share thoughts and comments with me [@mmsalva@umich.edu](mailto:mmsalva@umich.edu) or [@MaxSalTweers](twitter.com/MaxSalTweets)
+Please share thoughts and comments with me [@mmsalva@umich.edu](mailto:mmsalva@umich.edu) or [@MaxSalTweets](twitter.com/MaxSalTweets)
 
 ## Installation
 
