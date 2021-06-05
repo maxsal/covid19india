@@ -29,7 +29,10 @@ get_nat_counts <- function(
         total_cases  = total_confirmed,
         daily_deaths = daily_deceased,
         total_deaths = total_deceased
-        )
+        ) %>%
+      dplyr::mutate(
+        place = "India"
+      )
 
   }
 

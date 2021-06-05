@@ -21,6 +21,8 @@ get_state_counts <- function(
   d <- readr::read_csv(path,
                        col_types = cols())
 
+  data("pop")
+
   if (raw == FALSE) {
 
     d <- d %>%
@@ -53,7 +55,10 @@ get_state_counts <- function(
         total_recovered = cumsum(daily_recovered),
         total_deaths    = cumsum(daily_deaths)
       ) %>%
-      dplyr::ungroup()
+      dplyr::ungroup() %>%
+      dplyr::left_join(pop %>% dplyr::select(-population), by = "abbrev") %>%
+      dplyr::select(-abbrev) %>%
+      dplyr::select(place, dplyr::everything())
 
   }
 
