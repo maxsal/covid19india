@@ -7,10 +7,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' get_nat_time_series()
+#' get_nat_counts()
 #' }
 
-get_nat_time_series <- function(
+get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw        = FALSE
 ) {

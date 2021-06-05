@@ -8,10 +8,10 @@ The goal of covid19india is to ...
 
 ## Installation
 
-You can install the released version of covid19india from [CRAN](https://CRAN.R-project.org) with:
+You can install the development version of `covid19india` with:
 
 ``` r
-install.packages("covid19india")
+remotes::install_github("maxsal/covid19india")
 ```
 
 ## Example
