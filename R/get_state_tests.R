@@ -1,7 +1,7 @@
 #' Pull covid19india state-level testing data
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/statewise_tested_numbers_data.csv
 #' @param raw Pull raw unaltered data. Default is FALSE
-#' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
+#' @return Pulls the time-series state-level testing data directly from covid19india.org.
 #' @import dplyr
 #' @importFrom janitor clean_names
 #' @export
