@@ -36,7 +36,7 @@ estR0_out <- function(dat) {
       date_num, t_start, r = `Mean(R)`, lower = `Quantile.0.025(R)`, upper = `Quantile.0.975(R)`
     ) %>%
     tibble::add_column(date = dat$date) %>%
-    dplyr::select(-date_num) %>%
+    dplyr::select(-c(date_num, t_start)) %>%
     dplyr::select(date, tidyselect::everything())
 
 }
