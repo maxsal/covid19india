@@ -16,7 +16,5 @@ Imports:
     magrittr,
     tidyverse,
     janitor,
-    lifecycle,
-    dplyr,
-    readr
+    lifecycle
 Depends: R (>= 3.6)
