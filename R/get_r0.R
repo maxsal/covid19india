@@ -63,8 +63,6 @@ get_r0 <- function(
   min_date     = "2020-03-23"
   ) {
 
-  message("getting r0...")
-
   tmp_dat <- dat %>%
     dplyr::filter(daily_cases > daily_filter & total_cases >= total_filter) %>%
     dplyr::group_by(place) %>%

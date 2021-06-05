@@ -65,7 +65,7 @@ get_state_counts <- function(
   if (keep_nat == FALSE) {
 
     d <- d %>%
-      dplyr::filter(abbrev != "tt")
+      dplyr::filter(place != "India")
 
   }
 
