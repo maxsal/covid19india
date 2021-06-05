@@ -1,4 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-import(tidyverse, EpiEstim)
-importFrom(magrittr, "%>%")
-importFrom(janitor, clean_names)
+import(tidyverse, magrittr, janitor, EpiEstim)
