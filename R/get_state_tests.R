@@ -10,13 +10,13 @@
 #' get_state_counts()
 #' }
 
-get_state_testing <- function(
+get_state_tests <- function(
   path       = "https://api.covid19india.org/csv/latest/statewise_tested_numbers_data.csv",
   raw        = FALSE
 ) {
 
   d <- suppressWarnings(readr::read_csv(path,
-                                        col_types = dplyr::cols()))
+                                        col_types = readr::cols()))
 
   if (raw == FALSE) {
 
