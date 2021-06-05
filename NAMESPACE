@@ -1,3 +1,4 @@
 exportPattern("^[[:alpha:]]+")
-import(tidyverse, magrittr)
+import(tidyverse)
+importFrom(magrittr, "%>%")
 importFrom(janitor, clean_names)
