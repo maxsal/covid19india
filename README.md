@@ -20,7 +20,7 @@ Please share thoughts and comments with me [@mmsalva@umich.edu](mailto:mmsalva@u
 You can install the development version of `covid19india` with:
 
 ``` r
-remotes::install_github("maxsal/covid19india", dependendcies = TRUE)
+remotes::install_github("maxsal/covid19india", dependencies = TRUE)
 ```
 
 ## Coming soon :movie_camera:
@@ -34,7 +34,7 @@ remotes::install_github("maxsal/covid19india", dependendcies = TRUE)
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-# rremotes::install_github("maxsal/covid19india", dependendcies = TRUE)
+# rremotes::install_github("maxsal/covid19india", dependencies = TRUE)
 library(covid19india)
 
 # load data from covid19india.org -----------
