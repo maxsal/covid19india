@@ -4,7 +4,13 @@
 \alias{get_r0}
 \title{Calculate r0}
 \usage{
-get_r0(dat, daily_filter = 0, total_filter = 50, min_date = "2020-03-23")
+get_r0(
+  dat,
+  inc_var = daily_cases,
+  daily_filter = 0,
+  total_filter = 50,
+  min_date = "2020-03-23"
+)
 }
 \arguments{
 \item{dat}{Input dataset. Expects \code{daily_cases}, \code{total_cases}, and \code{place} columns}
