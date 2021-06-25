@@ -34,7 +34,7 @@ remotes::install_github("maxsal/covid19india", dependencies = TRUE)
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-# rremotes::install_github("maxsal/covid19india", dependencies = TRUE)
+# remotes::install_github("maxsal/covid19india", dependencies = TRUE)
 library(covid19india)
 
 # load data from covid19india.org -----------
