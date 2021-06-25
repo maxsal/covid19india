@@ -41,6 +41,7 @@ library(covid19india)
 nat_count   <- get_nat_counts()
 state_count <- get_state_counts()
 state_tests <- get_state_tests()
+state_vax   <- get_state_vax()
 
 # estimate r0 ----------
 nat_count %>% get_r0()
