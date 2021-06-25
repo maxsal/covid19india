@@ -32,7 +32,7 @@ get_state_vax <- function(
         date = as.Date(updated_on, "%d/%m/%Y")
       ) %>%
       dplyr::select(
-        date, state,
+        date, place = state,
         total_vax_ppl = total_individuals_vaccinated,
         total_doses   = total_doses_administered,
         first_doses   = first_dose_administered,
@@ -43,7 +43,7 @@ get_state_vax <- function(
         daily_doses = total_doses - dplyr::lag(total_doses)
       ) %>%
       dplyr::ungroup() %>%
-      dplyr::left_join(pop %>% dplyr::select(-abbrev), by = c("state" = "place")) %>%
+      dplyr::left_join(pop %>% dplyr::select(-abbrev), by = "place") %>%
       dplyr::mutate(
         pct_one_doses = round(total_vax_ppl * 100 / population, 4),
         pct_two_doses = round(second_doses * 100/ population, 4)
@@ -54,7 +54,7 @@ get_state_vax <- function(
 
   if (keep_nat == FALSE & raw == FALSE) {
     d <- d %>%
-      dplyr::filter(state != "India")
+      dplyr::filter(place != "India")
   }
 
   return(d)
