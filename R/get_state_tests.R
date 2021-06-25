@@ -31,7 +31,8 @@ get_state_tests <- function(
       dplyr::mutate(
         daily_tests = total_tests - dplyr::lag(total_tests)
       ) %>%
-      dplyr::ungroup()
+      dplyr::ungroup() %>%
+      dplyr::select(place, date, daily_tests, total_tests)
 
   }
 
