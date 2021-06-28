@@ -11,13 +11,13 @@
 #' }
 #'
 
-estR0_out <- function(dat) {
+estR0_out <- function(dat, inc_var) {
 
   t_start <- seq(2, nrow(dat) - 4)
   t_end   <- t_start + 4
 
   res <- EpiEstim::estimate_R(
-    incid = dat$daily_cases,
+    incid = dat[[{{ inc_var }}]],
     method = "parametric_si",
     config = EpiEstim::make_config(list(
       mean_si             = 7,
@@ -44,9 +44,9 @@ estR0_out <- function(dat) {
 
 #' Calculate r0
 #' @param dat Input dataset. Expects \code{daily_cases}, \code{total_cases}, and \code{place} columns
-#' @param daily_filter Theshold for minimum daily cases. Default = 0.
-#' @param total_filter Threshold for minimum total cases reported to date. Default = 50.
-#' @param min_date Threshold for earliest date to report R_0. Default = "2020-03-23".
+#' @param daily_filter Threshold for minimum daily cases. Default = `0`.
+#' @param total_filter Threshold for minimum total cases reported to date. Default = `50`.
+#' @param min_date Threshold for earliest date to report R_0. Default = `"2020-03-23"`.
 #' @return Pulls the time-series state-level testing data directly from covid19india.org.
 #' @import dplyr
 #' @importFrom janitor clean_names
@@ -86,7 +86,7 @@ get_r0 <- function(
     dplyr::select(date, daily_cases = {{ inc_var }}, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
-      estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x))
+      estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x, inc_var = inc_var))
     ) %>%
     tidyr::unnest(estR0) %>%
     dplyr::select(-data) %>%
@@ -95,4 +95,5 @@ get_r0 <- function(
   options(warn = 1)
 
   return(tmp_est)
+
 }

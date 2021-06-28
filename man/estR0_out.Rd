@@ -4,7 +4,7 @@
 \alias{estR0_out}
 \title{Helper function for calculating R_0}
 \usage{
-estR0_out(dat)
+estR0_out(dat, inc_var)
 }
 \arguments{
 \item{dat}{Input dataset}

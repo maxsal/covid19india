@@ -15,11 +15,11 @@ get_r0(
 \arguments{
 \item{dat}{Input dataset. Expects \code{daily_cases}, \code{total_cases}, and \code{place} columns}
 
-\item{daily_filter}{Theshold for minimum daily cases. Default = 0.}
+\item{daily_filter}{Threshold for minimum daily cases. Default = \code{0}.}
 
-\item{total_filter}{Threshold for minimum total cases reported to date. Default = 50.}
+\item{total_filter}{Threshold for minimum total cases reported to date. Default = \code{50}.}
 
-\item{min_date}{Threshold for earliest date to report R_0. Default = "2020-03-23".}
+\item{min_date}{Threshold for earliest date to report R_0. Default = \code{"2020-03-23"}.}
 }
 \value{
 Pulls the time-series state-level testing data directly from covid19india.org.
