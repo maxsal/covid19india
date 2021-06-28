@@ -17,7 +17,7 @@ estR0_out <- function(dat, inc_var) {
   t_end   <- t_start + 4
 
   res <- EpiEstim::estimate_R(
-    incid = dat[[inc_var]],
+    incid = dat[inc_var],
     method = "parametric_si",
     config = EpiEstim::make_config(list(
       mean_si             = 7,
