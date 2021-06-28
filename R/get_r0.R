@@ -11,13 +11,13 @@
 #' }
 #'
 
-estR0_out <- function(dat, inc_var) {
+estR0_out <- function(dat) {
 
   t_start <- seq(2, nrow(dat) - 4)
   t_end   <- t_start + 4
 
   res <- EpiEstim::estimate_R(
-    incid = dat[inc_var],
+    incid = dat$daily_cases,
     method = "parametric_si",
     config = EpiEstim::make_config(list(
       mean_si             = 7,
@@ -86,7 +86,7 @@ get_r0 <- function(
     dplyr::select(date, daily_cases = {{ inc_var }}, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
-      estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x, inc_var = deparse(substitute(inc_var))))
+      estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x))
     ) %>%
     tidyr::unnest(estR0) %>%
     dplyr::select(-data) %>%
