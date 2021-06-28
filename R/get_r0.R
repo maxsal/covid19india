@@ -53,7 +53,7 @@ estR0_out <- function(dat) {
 #' @export
 #' @examples
 #' \dontrun{
-#' # used in get_r0() function
+#' # get_nat_counts() %>% get_r0()
 #' }
 #'
 

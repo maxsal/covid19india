@@ -29,7 +29,7 @@ Calculate r0
 }
 \examples{
 \dontrun{
-# used in get_r0() function
+# get_nat_counts() \%>\% get_r0()
 }
 
 }
