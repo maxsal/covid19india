@@ -5,13 +5,13 @@
 \title{Pull covid19india state-level vaccine data}
 \usage{
 get_state_vax(
-  path = "https://api.covid19india.org/csv/latest/cowin_vaccine_data_statewise.csv",
+  path = "https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv",
   raw = FALSE,
   keep_nat = TRUE
 )
 }
 \arguments{
-\item{path}{The URL path for the data. Default: https://api.covid19india.org/csv/latest/cowin_vaccine_data_statewise.csv}
+\item{path}{The URL path for the data. Default: https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv}
 
 \item{raw}{Pull raw unaltered data. Default is FALSE}
 
