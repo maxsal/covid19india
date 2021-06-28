@@ -32,7 +32,10 @@ get_state_tests <- function(
         daily_tests = total_tests - dplyr::lag(total_tests)
       ) %>%
       dplyr::ungroup() %>%
-      dplyr::select(place, date, daily_tests, total_tests)
+      dplyr::select(place, date, daily_tests, total_tests) %>%
+      dplyr::left_join(pop %>% dplyr::select(place, population), by = "place") %>%
+      dplyr::mutate(ppt = total_tests / population) %>%
+      dplyr::select(-population)
 
   }
 
