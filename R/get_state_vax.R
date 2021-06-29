@@ -41,7 +41,8 @@ get_state_vax <- function(
       dplyr::left_join(pop %>%
                          dplyr::select(-abbrev) %>%
                          dplyr::add_row(place = "Dadra and Nagar Haveli and Daman and Diu",
-                                        population = 3.44e5 + 2.43e5),
+                                        population = 3.44e5 + 2.43e5) %>%
+                         distinct(),
                        by = "place") %>%
       dplyr::mutate(
         pct_one_doses = round(first_dose * 100 / population, 4),

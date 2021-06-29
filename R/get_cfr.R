@@ -74,6 +74,7 @@ get_cfr <- function(dat) {
         place == "India" ~ "National estimate",
         TRUE ~ place
       )
-    )
+    ) %>%
+    distinct()
 
 }
