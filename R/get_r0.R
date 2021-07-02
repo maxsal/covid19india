@@ -93,7 +93,7 @@ get_r0 <- function(
     ) %>%
     dplyr::ungroup() %>%
     dplyr::filter(ns >=7) %>%
-    dplyr::rename(daily_case = {{ daily_var }}, place = {{ place_var }})
+    dplyr::rename(daily_cases = {{ daily_var }}, place = {{ place_var }})
 
   options(warn = -1)
   tmp_est <- tmp_dat %>%
