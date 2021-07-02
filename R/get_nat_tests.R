@@ -30,7 +30,7 @@ get_nat_tests <- function(
         Date  = testedasof
       ) %>%
       mutate(
-        Date    = as.Date(word(Date, 1), format = "%d/%m/%Y"),
+        Date    = as.Date(stringr::word(Date, 1), format = "%d/%m/%Y"),
         Cases   = as.numeric(str_remove(Cases, ",")),
         Tests   = as.numeric(str_remove(Tests, ",")),
         Country = "India"
