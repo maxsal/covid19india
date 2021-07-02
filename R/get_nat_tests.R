@@ -31,8 +31,8 @@ get_nat_tests <- function(
       ) %>%
       mutate(
         Date    = as.Date(stringr::word(Date, 1), format = "%d/%m/%Y"),
-        Cases   = as.numeric(str_remove(Cases, ",")),
-        Tests   = as.numeric(str_remove(Tests, ",")),
+        Cases   = as.numeric(stringr::str_remove(Cases, ",")),
+        Tests   = as.numeric(stringr::str_remove(Tests, ",")),
         Country = "India"
       ) %>%
       janitor::clean_names() %>%
