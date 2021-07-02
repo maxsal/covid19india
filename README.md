@@ -48,4 +48,9 @@ nat_count %>% get_r0()
 state_count %>% get_r0()
 
 ```
+## Versions
 
+### Version 0.1.1
+* ➕ ADD `get_all_data()` function to pull state and national level time-series count, testing, and vaccine data
+* ➕ ADD `get_district_counts()` function to pull district-level time-series count data
+* 🔧 FIX `get_r0 function` to handle different input variable names
