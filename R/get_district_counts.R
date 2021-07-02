@@ -26,11 +26,10 @@ get_district_counts <- function(
       dplyr::rename(
         total_cases     = confirmed,
         total_recovered = recovered,
-        total_deaths    = deceased,
-        place           = district
+        total_deaths    = deceased
       ) %>%
       dplyr::filter(dplyr::select(., where(is.numeric)) >= 0) %>%
-      dplyr::group_by(state, place) %>%
+      dplyr::group_by(state, district) %>%
       dplyr::arrange(date) %>%
       dplyr::mutate(
         daily_cases     = total_cases - dplyr::lag(total_cases),
@@ -39,7 +38,7 @@ get_district_counts <- function(
       ) %>%
       tidyr::drop_na(daily_cases, daily_recovered, daily_deaths) %>%
       dplyr::ungroup() %>%
-      dplyr::select(state, place, date,
+      dplyr::select(state, district, date,
                     daily_cases, daily_recovered, daily_deaths,
                     total_cases, total_recovered, total_deaths)
 
