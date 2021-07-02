@@ -11,11 +11,11 @@ get_state_counts(
 )
 }
 \arguments{
-\item{path}{The URL path for the data. Default: https://api.covid19india.org/csv/latest/state_wise_daily.csv}
+\item{path}{The URL path for the data. Default: \verb{https://api.covid19india.org/csv/latest/state_wise_daily.csv}}
 
-\item{raw}{Pull raw unaltered data. Default is FALSE}
+\item{raw}{Pull raw unaltered data. Default is \code{FALSE}}
 
-\item{keep_nat}{Keep the national data as well. Default is FALSE}
+\item{keep_nat}{Keep the national data as well. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series case, death, and recovered data directly from covid19india.org.

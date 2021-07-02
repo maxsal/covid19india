@@ -6,7 +6,9 @@
 \usage{
 get_r0(
   dat,
-  inc_var = daily_cases,
+  place_var = place,
+  daily_var = daily_cases,
+  total_var = total_cases,
   daily_filter = 0,
   total_filter = 50,
   min_date = "2020-03-23"
@@ -15,6 +17,12 @@ get_r0(
 \arguments{
 \item{dat}{Input dataset. Expects \code{daily_cases}, \code{total_cases}, and \code{place} columns}
 
+\item{place_var}{Variable corresponding to the place. If data corresponds to single place, this variable is arbitrary. Default \code{place_var} is \code{place}}
+
+\item{daily_var}{Variable corresponding to the daily (incidence) case count data. Default is \code{daily_cases}}
+
+\item{total_var}{Variable corresponding to the total (cumulative) case count data. Default is \code{total_cases}}
+
 \item{daily_filter}{Threshold for minimum daily cases. Default = \code{0}.}
 
 \item{total_filter}{Threshold for minimum total cases reported to date. Default = \code{50}.}
@@ -22,7 +30,7 @@ get_r0(
 \item{min_date}{Threshold for earliest date to report R_0. Default = \code{"2020-03-23"}.}
 }
 \value{
-Pulls the time-series state-level testing data directly from covid19india.org.
+Pulls the time-series state-level testing data directly from covid19india.org. Expects columns named \code{place}, \code{daily_cases}, and \code{total_cases}. Can specify corresponding variables through other arguments.
 }
 \description{
 Calculate r0

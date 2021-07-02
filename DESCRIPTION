@@ -1,7 +1,7 @@
 Package: covid19india
 Type: Package
 Title: Pulling clean data from covid10india.org
-Version: 0.1.0
+Version: 0.1.1
 Author: person("Max", "Salvatore", email = "mmsalva@umich.edu", role = c("aut", "cre"))
 Description: This package was designed while working with data on COVID-19 in India. covid19india.org is 
     a data resource with APIs available. It is updated daily and provides count, testing, and vaccine data 

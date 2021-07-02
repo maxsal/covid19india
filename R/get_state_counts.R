@@ -1,7 +1,7 @@
 #' Pull covid19india state
-#' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/state_wise_daily.csv
-#' @param raw Pull raw unaltered data. Default is FALSE
-#' @param keep_nat Keep the national data as well. Default is FALSE
+#' @param path The URL path for the data. Default: `https://api.covid19india.org/csv/latest/state_wise_daily.csv`
+#' @param raw Pull raw unaltered data. Default is `FALSE`
+#' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import dplyr
 #' @import tidyr

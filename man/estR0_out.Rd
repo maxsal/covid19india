@@ -10,7 +10,7 @@ estR0_out(dat)
 \item{dat}{Input dataset}
 }
 \value{
-Pulls the time-series state-level testing data directly from covid19india.org. Expects a \code{daily_cases} column
+Pulls the time-series state-level testing data directly from covid19india.org.
 }
 \description{
 Helper function for calculating R_0

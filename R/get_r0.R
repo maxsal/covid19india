@@ -1,6 +1,6 @@
 #' Helper function for calculating R_0
 #' @param dat Input dataset
-#' @return Pulls the time-series state-level testing data directly from covid19india.org. Expects a \code{daily_cases} column
+#' @return Pulls the time-series state-level testing data directly from covid19india.org.
 #' @keywords internal
 #' @import dplyr
 #' @import EpiEstim
@@ -44,10 +44,13 @@ estR0_out <- function(dat) {
 
 #' Calculate r0
 #' @param dat Input dataset. Expects \code{daily_cases}, \code{total_cases}, and \code{place} columns
+#' @param place_var Variable corresponding to the place. If data corresponds to single place, this variable is arbitrary. Default `place_var` is `place`
+#' @param daily_var Variable corresponding to the daily (incidence) case count data. Default is `daily_cases`
+#' @param total_var Variable corresponding to the total (cumulative) case count data. Default is `total_cases`
 #' @param daily_filter Threshold for minimum daily cases. Default = `0`.
 #' @param total_filter Threshold for minimum total cases reported to date. Default = `50`.
 #' @param min_date Threshold for earliest date to report R_0. Default = `"2020-03-23"`.
-#' @return Pulls the time-series state-level testing data directly from covid19india.org.
+#' @return Pulls the time-series state-level testing data directly from covid19india.org. Expects columns named `place`, `daily_cases`, and `total_cases`. Can specify corresponding variables through other arguments.
 #' @import dplyr
 #' @importFrom janitor clean_names
 #' @export
@@ -59,31 +62,42 @@ estR0_out <- function(dat) {
 
 get_r0 <- function(
   dat,
-  inc_var = daily_cases,
+  place_var    = place,
+  daily_var    = daily_cases,
+  total_var    = total_cases,
   daily_filter = 0,
   total_filter = 50,
   min_date     = "2020-03-23"
   ) {
 
-  message(paste0("calculating r0 using `", deparse(substitute(inc_var)),"` variable..."))
+  if ((deparse(substitute(place_var)) %in% names(dat)) == FALSE) {
+    stop(paste0("Looking for ", deparse(substitute(place_var)), " in data, but not found. ",
+                "Check if `place_var` argument is correctly specified"))
+  }
 
-  if ((deparse(substitute(inc_var)) %in% names(dat)) == FALSE) {
-    stop(paste0("Looking for ", deparse(substitute(inc_var)), " in data, but not found. ",
-                "Check if `inc_var` argument is correctly specified"))
+  if ((deparse(substitute(daily_var)) %in% names(dat)) == FALSE) {
+    stop(paste0("Looking for ", deparse(substitute(daily_var)), " in data, but not found. ",
+                "Check if `daily_var` argument is correctly specified"))
+  }
+
+  if ((deparse(substitute(total_var)) %in% names(dat)) == FALSE) {
+    stop(paste0("Looking for ", deparse(substitute(total_var)), " in data, but not found. ",
+                "Check if `total_var` argument is correctly specified"))
   }
 
   tmp_dat <- dat %>%
-    dplyr::filter({{ inc_var }} > daily_filter & total_cases >= total_filter) %>%
-    dplyr::group_by(place) %>%
+    dplyr::filter({{ daily_var }} > daily_filter & {{ total_var }} >= total_filter) %>%
+    dplyr::group_by({{ place_var }}) %>%
     dplyr::mutate(
       ns = n()
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(ns >=7)
+    dplyr::filter(ns >=7) %>%
+    dplyr::rename(daily_case = {{ daily_var }}, place = {{ place_var }})
 
   options(warn = -1)
   tmp_est <- tmp_dat %>%
-    dplyr::select(date, daily_cases = {{ inc_var }}, place) %>%
+    dplyr::select(date, daily_cases, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
       estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x))
