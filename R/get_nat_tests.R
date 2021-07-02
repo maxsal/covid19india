@@ -24,15 +24,15 @@ get_nat_tests <- function(
   if (raw == FALSE) {
 
     d <- d %>%
-      select(
+      dplyr::select(
         Cases = totalpositivecases,
         Tests = totalsamplestested,
         Date  = testedasof
       ) %>%
-      mutate(
+      dplyr::mutate(
         Date    = as.Date(stringr::word(Date, 1), format = "%d/%m/%Y"),
-        Cases   = as.numeric(stringr::str_remove(Cases, ",")),
-        Tests   = as.numeric(stringr::str_remove(Tests, ",")),
+        Cases   = as.numeric(gsub(",", "", Cases)),
+        Tests   = as.numeric(gsub(",", "", Tests)),
         Country = "India"
       ) %>%
       janitor::clean_names() %>%
