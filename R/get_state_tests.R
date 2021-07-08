@@ -33,7 +33,14 @@ get_state_tests <- function(
       ) %>%
       dplyr::ungroup() %>%
       dplyr::select(place, date, daily_tests, total_tests) %>%
-      dplyr::left_join(pop %>% dplyr::select(place, population), by = "place") %>%
+      dplyr::left_join(
+        pop %>%
+          dplyr::add_row(place = "Dadra and Nagar Haveli and Daman and Diu",
+                  population = pop %>% filter(abbrev %in% c("dn", "dd")) %>% pull(population) %>% sum()) %>%
+          dplyr::select(-abbrev) %>%
+          distinct(),
+        by = "place"
+      ) %>%
       dplyr::mutate(ppt = total_tests / population) %>%
       dplyr::select(-population)
 
