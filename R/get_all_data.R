@@ -18,7 +18,7 @@ get_all_data <- function(
     covid19india::get_nat_counts(),
     covid19india::get_state_counts()
     ) %>%
-    dplyr::left_join(
+    dplyr::full_join(
       dplyr::bind_rows(
         covid19india::get_nat_tests(),
         covid19india::get_state_tests()
@@ -34,6 +34,7 @@ get_all_data <- function(
       by = c("place", "date")) %>%
     dplyr::left_join(
       pop %>%
+        dplyr::distinct(place, .keep_all = TRUE) %>%
         dplyr::select(-population),
       by = "place") %>%
     dplyr::mutate(tpr = daily_cases / daily_tests) %>%
