@@ -29,6 +29,10 @@ get_state_counts <- function(
       dplyr::rename(
         date         = date_ymd
       ) %>%
+      dplyr::mutate(
+        dh = dd + dn
+      ) %>%
+      dplyr::select(-c(dd, dn)) %>%
       tidyr::pivot_longer(
         names_to  = "abbrev",
         values_to = "count",
@@ -61,9 +65,14 @@ get_state_counts <- function(
   }
 
   if (keep_nat == FALSE) {
-
-    d <- d %>%
-      dplyr::filter(place != "India")
+    if (raw == FALSE) {
+      d <- d %>%
+        dplyr::filter(!(place %in% c("India")))
+    }
+    if (raw == TRUE) {
+      d <- d %>%
+        dplyr::select(-TT)
+    }
 
   }
 
