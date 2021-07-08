@@ -26,6 +26,7 @@ get_state_tests <- function(
         date = as.Date(updated_on, "%d/%m/%Y")
       ) %>%
       dplyr::select(date, place = state, total_tests = total_tested) %>%
+      distinct() %>%
       dplyr::group_by(place) %>%
       dplyr::arrange(date) %>%
       dplyr::mutate(

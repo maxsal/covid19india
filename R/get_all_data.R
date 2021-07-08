@@ -18,7 +18,7 @@ get_all_data <- function(
     covid19india::get_nat_counts(),
     covid19india::get_state_counts()
     ) %>%
-    dplyr::full_join(
+    dplyr::left_join(
       dplyr::bind_rows(
         covid19india::get_nat_tests(),
         covid19india::get_state_tests()
