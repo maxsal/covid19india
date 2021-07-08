@@ -1,6 +1,7 @@
 #' Pull all covid19india count, test, and vaccine data for states and nation
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
-#' @return Pulls the district-level time-series case, death, and recovered data directly from covid19india.org.
+#' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](covind19.org) application
+#' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](covid19india.org).
 #' @import dplyr
 #' @import tidyr
 #' @importFrom janitor clean_names
@@ -11,7 +12,8 @@
 #' }
 
 get_all_data <- function(
-  keep_nat = TRUE
+  keep_nat             = TRUE,
+  covind19_name_scheme = FALSE
 ) {
 
   d <- dplyr::bind_rows(
@@ -46,6 +48,23 @@ get_all_data <- function(
   if (keep_nat == FALSE) {
 
     d %>% filter(place != "India")
+
+  }
+
+  if (covind19_name_scheme == TRUE) {
+
+    message("{covid19india} variable naming scheme is encouraged (`covind19_naming_scheme == FALSE`)")
+
+    d <- d %>%
+      dplyr::rename(
+        cases            = daily_cases,
+        recovered        = daily_recovered,
+        deaths           = daily_deaths,
+        total_vacc       = total_doses,
+        pct_at_least_one = pct_one_doses,
+        pct_second       = pct_two_doses,
+        daily_vax_dose   = daily_doses
+      )
 
   }
 
