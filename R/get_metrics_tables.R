@@ -767,21 +767,20 @@ get_metrics_tables <- function(top20 = NULL) {
   }
 
   message("outputting...")
-  return(out)
 
   if (is.null(top20)) {
-    list(full              = tabl,
+    return(list(full              = tabl,
          point_in_time     = point_in_time,
          cumulative        = cumulative
-    )
+    ))
   } else {
-    list(full              = tabl,
+    return(list(full              = tabl,
          point_in_time     = point_in_time,
          cumulative        = cumulative,
          full_t20          = t20_tabl,
          point_in_time_t20 = t20_point_in_time,
          cumulative_t20    = t20_cumulative
-    )
+    ))
   }
 
 }
