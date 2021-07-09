@@ -2,6 +2,7 @@
 
 export("%>%")
 export(biblioteca)
+export(extract_latest)
 export(get_all_data)
 export(get_cfr)
 export(get_district_counts)
