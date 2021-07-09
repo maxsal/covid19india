@@ -12,7 +12,7 @@ A data frame with 39 rows and 3 variables: \code{place}, \code{abbrev},
 \item{abbrev}{The abbreviations corresponding to place}
 \item{population}{The population size}
 }
-\source{2019-2020 Annual Report Annexure IV (pg 103), Unique Identification Authority of India \url{https://uidai.gov.in/images/AADHAR_AR_2019_20_ENG_approved.pdf}}
+\source{Source: 2019-2020 Annual Report Annexure IV (pg 103), Unique Identification Authority of India \url{https://uidai.gov.in/images/AADHAR_AR_2019_20_ENG_approved.pdf}}
 }
 \usage{
 pop
