@@ -769,12 +769,12 @@ get_metrics_tables <- function(top20 = NULL) {
   message("outputting...")
 
   if (is.null(top20)) {
-    return(list(full              = tabl,
+    return(list(full       = tabl,
          point_in_time     = point_in_time,
          cumulative        = cumulative
     ))
   } else {
-    return(list(full              = tabl,
+    return(list(full       = tabl,
          point_in_time     = point_in_time,
          cumulative        = cumulative,
          full_t20          = t20_tabl,
