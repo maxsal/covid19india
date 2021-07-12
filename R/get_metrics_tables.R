@@ -21,13 +21,13 @@ get_metrics_tables <- function(top20 = NULL) {
   message("prepping...")
 
   today           <- Sys.Date() - 1
-  tp              <- dat %>% filter(date <= today)
+  tp              <- dat %>% dplyr::filter(date <= today)
   cfr1            <- cfr
   r_est           <- r0_est
   india_state_pop <- pop
 
   # pull abbrevs -----------
-  use_abbrevs <- tp %>% filter(abbrev != "la") %>% pull(abbrev) %>% unique() %>% tolower()
+  use_abbrevs <- tp %>% dplyr::filter(abbrev != "la") %>% dplyr::pull(abbrev) %>% unique() %>% tolower()
 
   # state data ----------
   vax_dat <- get_state_vax() %>%
