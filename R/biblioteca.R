@@ -2,6 +2,7 @@
 #' @param libs A character vector of libraries to install and load. Use `user_name/package_name` syntax for GitHub packages.
 #' @return Install and load packages from CRAN and GitHub.
 #' @import remotes
+#' @import cli
 #' @export
 #' @examples
 #' \dontrun{
@@ -17,13 +18,12 @@ biblioteca <- function(libs) {
 
       if (nzchar(system.file(package = libs[i])) == FALSE) {
 
-        message(paste0("installing ", libs[i], "..."))
+        cli::cli_alert_info(paste0("installing ", libs[i], "..."))
         install.packages(libs[i])
 
       }
 
       # load library -----------
-      message(paste0("loading `", libs[i], "` library"))
       suppressPackageStartupMessages(library(libs[i], character.only = T))
 
     }
@@ -41,12 +41,13 @@ biblioteca <- function(libs) {
       }
 
       # load library -----------
-      message(paste0("loading `", libs[i], "` library"))
       suppressPackageStartupMessages(library(tmp_lib, character.only = T))
 
     }
 
   }
+
+  cli::cli_alert_success("{length(libs)} librar{?y/ies} loaded")
 
 }
 
