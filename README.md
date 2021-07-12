@@ -13,7 +13,7 @@ ready for analysis in hopes of democratizing data science and speed up public he
 :warning: **The package is under active development.** :warning: After creating functions for pulling data,
 additional functions to calculate *basic* public health metrics and data visualizations will be added.
 
-Please share thoughts and comments with me [@mmsalva@umich.edu](mailto:mmsalva@umich.edu) or [@MaxSalTweets](twitter.com/MaxSalTweets)
+Please share thoughts and comments with me: [mmsalva@umich.edu](mailto:mmsalva@umich.edu) or 🐦 [@MaxSalTweets](twitter.com/MaxSalTweets)
 
 ## Installation
 
