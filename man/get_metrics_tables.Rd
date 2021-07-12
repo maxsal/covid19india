@@ -4,9 +4,11 @@
 \alias{get_metrics_tables}
 \title{Create metrics tables}
 \usage{
-get_metrics_tables(top20 = NULL)
+get_metrics_tables(seed = 46342, top20 = NULL)
 }
 \arguments{
+\item{seed}{set seed}
+
 \item{top20}{Vector of state abbreviations for top 20 table}
 }
 \value{

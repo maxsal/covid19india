@@ -4,10 +4,10 @@
 \alias{biblioteca}
 \title{Install and load libraries from CRAN and GitHub}
 \usage{
-biblioteca(libs)
+biblioteca(...)
 }
 \arguments{
-\item{libs}{A character vector of libraries to install and load. Use \code{user_name/package_name} syntax for GitHub packages.}
+\item{...}{Packages as character ("") or bare (i.e. without quotes) names to install and load. Use \code{user_name/package_name} syntax for GitHub packages.}
 }
 \value{
 Install and load packages from CRAN and GitHub.

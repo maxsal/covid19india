@@ -1,4 +1,5 @@
 #' Create metrics tables
+#' @param seed set seed
 #' @param top20 Vector of state abbreviations for top 20 table
 #' @return Creates metrics tables for use in covind19.org
 #' @import gt
@@ -16,15 +17,19 @@
 #' tabs$full
 #' }
 
-get_metrics_tables <- function(top20 = NULL) {
+get_metrics_tables <- function(seed = 46342, top20 = NULL) {
 
-  message("prepping...")
+  cli::cli_alert_info("getting data...")
 
+  set.seed(set_seed <- seed)
   today           <- Sys.Date() - 1
+  dat             <- get_all_data() %>% dplyr::filter(date <= today)
+  cfr1            <- get_cfr(dat) %>% distinct()
+  r_est           <- get_r_est(dat)
   tp              <- dat
-  cfr1            <- cfr
-  r_est           <- r0_est
   india_state_pop <- pop
+
+  cli::cli_alert_success("data load success!!")
 
   # pull abbrevs -----------
   use_abbrevs <- tp %>% filter(abbrev != "la") %>% pull(abbrev) %>% unique() %>% tolower()
