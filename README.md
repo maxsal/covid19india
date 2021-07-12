@@ -50,6 +50,9 @@ state_count %>% get_r0()
 ```
 ## Versions
 
+### Version 0.1.2
+* ➕ ADD [`biblioteca.R`](R/biblioteca.R) function to install (if necessary) and load CRAN and GitHub packages
+
 ### Version 0.1.1
 * ➕ ADD [`get_all_data()`](R/get_all_data.R) function to pull state and national level time-series count, testing, and vaccine data
 * ➕ ADD [`get_district_counts()`](R/get_district_counts.R) function to pull district-level time-series count data
