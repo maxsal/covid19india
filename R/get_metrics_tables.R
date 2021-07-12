@@ -21,7 +21,7 @@ get_metrics_tables <- function(top20 = NULL) {
   message("prepping...")
 
   today           <- Sys.Date() - 1
-  tp              <- dat
+  tp              <- dat %>% filter(date <= today)
   cfr1            <- cfr
   r_est           <- r0_est
   india_state_pop <- pop
