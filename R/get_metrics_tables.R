@@ -23,16 +23,22 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
 
   set.seed(set_seed <- seed)
   today           <- Sys.Date() - 1
+<<<<<<< HEAD
   dat             <- get_all_data() %>% dplyr::filter(date <= today)
   cfr1            <- get_cfr(dat) %>% distinct()
   r_est           <- get_r_est(dat)
   tp              <- dat
+=======
+  tp              <- dat %>% dplyr::filter(date <= today)
+  cfr1            <- cfr
+  r_est           <- r0_est
+>>>>>>> fe9619e9ce5aae49f9be4a576c20391c34ace46e
   india_state_pop <- pop
 
   cli::cli_alert_success("data load success!!")
 
   # pull abbrevs -----------
-  use_abbrevs <- tp %>% filter(abbrev != "la") %>% pull(abbrev) %>% unique() %>% tolower()
+  use_abbrevs <- tp %>% dplyr::filter(abbrev != "la") %>% dplyr::pull(abbrev) %>% unique() %>% tolower()
 
   # state data ----------
   vax_dat <- get_state_vax() %>%
