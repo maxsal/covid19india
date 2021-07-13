@@ -18,7 +18,6 @@ Imports:
     dplyr,
     gt,
     httr,
-    remotes,
     tibble,
     tidyr,
     tidyverse,
