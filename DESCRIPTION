@@ -1,12 +1,12 @@
 Package: covid19india
 Type: Package
-Title: Pulling clean data from covid10india.org
+Title: Pulling clean data from covid19india.org
 Version: 0.1.2
 Authors@R: person(given = "Max", family = "Salvatore", role = c("aut", "cre"), email = "mmsalva@umich.edu")
 Description: This package was designed while working with data on COVID-19 in India. covid19india.org is 
     a data resource with APIs available. It is updated daily and provides count, testing, and vaccine data 
     at the national, state, and district level. This package eases the process for R users to obtain data 
-    ready for analysis in hopes of democratizing data science and speed up public health research.
+    ready for analysis in hopes of democratizing data science and speeding up public health research.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
