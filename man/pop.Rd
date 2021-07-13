@@ -12,7 +12,6 @@ A data frame with 39 rows and 3 variables: \code{place}, \code{abbrev},
 \item{abbrev}{The abbreviations corresponding to place}
 \item{population}{The population size}
 }
-\source{Source: 2019-2020 Annual Report Annexure IV (pg 103), Unique Identification Authority of India \url{https://uidai.gov.in/images/AADHAR_AR_2019_20_ENG_approved.pdf}}
 }
 \usage{
 pop
@@ -22,5 +21,8 @@ This data set contains the names of states and union territories in India
 along with their respective abbreviations and populations.
 The population of India is also given. These are 2019 projections as reported
 in the Unique Identification Authority of India 2019-2020 Annual Report.
+}
+\references{
+2019-2020 Annual Report Annexure IV (pg 103), Unique Identification Authority of India \url{https://uidai.gov.in/images/AADHAR_AR_2019_20_ENG_approved.pdf}
 }
 \keyword{datasets}

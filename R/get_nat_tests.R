@@ -5,6 +5,7 @@
 #' @import tidyverse
 #' @import httr
 #' @importFrom janitor clean_names
+#' @importFrom stringr word
 #' @export
 #' @examples
 #' \dontrun{

@@ -47,7 +47,7 @@ get_all_data <- function(
 
   if (keep_nat == FALSE) {
 
-    d %>% filter(place != "India")
+    d %>% dplyr::filter(place != "India")
 
   }
 

@@ -14,8 +14,8 @@ CFR <- function(C,D) {
   cfr_logit <- log(cfr) - log(1 - cfr)
   sd_logit  <- sqrt(C / (D * (C - D)))
 
-  lower_logit <- cfr_logit - qnorm(0.975) * sd_logit
-  upper_logit <- cfr_logit + qnorm(0.975) * sd_logit
+  lower_logit <- cfr_logit - stats::qnorm(0.975) * sd_logit
+  upper_logit <- cfr_logit + stats::qnorm(0.975) * sd_logit
 
   upper <- exp(upper_logit) / (1 + exp(upper_logit))
   lower <- exp(lower_logit) / (1 + exp(lower_logit))

@@ -4,6 +4,7 @@
 #' @return Pulls the time-series state-level testing data directly from covid19india.org.
 #' @import dplyr
 #' @importFrom janitor clean_names
+#' @importFrom readr read_csv
 #' @export
 #' @examples
 #' \dontrun{

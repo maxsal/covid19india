@@ -6,6 +6,7 @@
 #' @import tidyverse
 #' @importFrom glue glue
 #' @importFrom janitor clean_names
+#' @importFrom scales col_bin
 #' @export
 #' @examples
 #' \dontrun{
@@ -229,11 +230,11 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
     # color cells based on values
     data_color(
       columns = c(R),
-      colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
+      colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
     ) %>%
     data_color(
       columns = c(`7-day average daily TPR`),
-      colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
+      colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
     ) %>%
     # highlight national estimate
     tab_style(
@@ -343,11 +344,11 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
     # color cells based on values
     data_color(
       columns = c(R),
-      colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
+      colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
     ) %>%
     data_color(
       columns = c(`7-day average daily TPR`),
-      colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
+      colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
     ) %>%
     # highlight national estimate
     tab_style(
@@ -554,11 +555,11 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
       # color cells based on values
       data_color(
         columns = c(R),
-        colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
+        colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
       ) %>%
       data_color(
         columns = c(`7-day average daily TPR`),
-        colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
+        colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
       ) %>%
       # highlight national estimate
       tab_style(
@@ -668,11 +669,11 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
       # color cells based on values
       data_color(
         columns = c(R),
-        colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
+        colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
       ) %>%
       data_color(
         columns = c(`7-day average daily TPR`),
-        colors = col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
+        colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
       ) %>%
       # highlight national estimate
       tab_style(

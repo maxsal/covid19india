@@ -6,6 +6,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @importFrom janitor clean_names
+#' @importFrom readr read_csv
 #' @export
 #' @examples
 #' \dontrun{

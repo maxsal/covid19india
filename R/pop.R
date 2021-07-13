@@ -12,5 +12,5 @@
 #'   \item{abbrev}{The abbreviations corresponding to place}
 #'   \item{population}{The population size}
 #' }
-#' \source{Source: 2019-2020 Annual Report Annexure IV (pg 103), Unique Identification Authority of India \url{https://uidai.gov.in/images/AADHAR_AR_2019_20_ENG_approved.pdf}}
+#' @references 2019-2020 Annual Report Annexure IV (pg 103), Unique Identification Authority of India \url{https://uidai.gov.in/images/AADHAR_AR_2019_20_ENG_approved.pdf}
 "pop"

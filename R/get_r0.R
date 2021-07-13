@@ -5,6 +5,8 @@
 #' @import dplyr
 #' @import EpiEstim
 #' @importFrom janitor clean_names
+#' @importFrom purrr map
+#' @importFrom tidyselect everything
 #' @examples
 #' \dontrun{
 #' # used in get_r0() function
@@ -100,7 +102,7 @@ get_r0 <- function(
     dplyr::select(date, daily_cases, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
-      estR0 = purrr::map(data, ~covid19india:::estR0_out(dat = .x))
+      estR0 = purrr::map(data, ~estR0_out(dat = .x))
     ) %>%
     tidyr::unnest(estR0) %>%
     dplyr::select(-data) %>%

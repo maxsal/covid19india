@@ -5,17 +5,17 @@
 \title{Helper function}
 \usage{
 extract_latest(
-  data,
+  dat,
   group = place,
   cols = c("total_tests", "tpr", "dbl", "ppt")
 )
 }
 \arguments{
+\item{dat}{data set}
+
 \item{group}{place variable}
 
 \item{cols}{columns to be extracted}
-
-\item{dat}{data set}
 }
 \value{
 Data set of recent observations of selected variables
@@ -25,6 +25,6 @@ Helper function
 }
 \examples{
 \dontrun{
-
+# extract_latest()
 }
 }

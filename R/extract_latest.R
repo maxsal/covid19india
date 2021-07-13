@@ -7,11 +7,11 @@
 #' @export
 #' @examples
 #' \dontrun{
-#'
+#' # extract_latest()
 #' }
 
-extract_latest <- function(data, group = place, cols = c("total_tests", "tpr", "dbl", "ppt")) {
-  out <- data %>%
+extract_latest <- function(dat, group = place, cols = c("total_tests", "tpr", "dbl", "ppt")) {
+  out <- dat %>%
     group_by({{ group }}) %>%
     filter(date == max(date)) %>%
     distinct(date, .keep_all = TRUE) %>%
