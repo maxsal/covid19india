@@ -5,7 +5,7 @@
 ![lifecycle](https://raw.githubusercontent.com/maxsal/covid19india/main/man/figures/lifecycle-experimental.svg)
 <!-- badges: end -->
 
-`covid19india` is designed while working with data on COVID-19 in India. [covid19india.org](https://covid19india.org/) is 
+`covid19india` is designed while working with data on COVID-19 in India. [covid19india.org](https://www.covid19india.org/) is 
 a data resource with APIs available. It is updated daily and provides count, testing, and vaccine data 
 at the national, state, and district level. This package eases the process for R users to obtain data 
 ready for analysis in hopes of democratizing data science and speed up public health research.
