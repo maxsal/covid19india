@@ -4,6 +4,7 @@
 #' @param keep_nat Keep national level data? Default is TRUE
 #' @return Pulls the time-series state-level vaccine data directly from covid19india.org.
 #' @import dplyr
+#' @importFrom cli cli_alert_info
 #' @importFrom janitor clean_names
 #' @importFrom readr read_csv
 #' @export
@@ -19,7 +20,7 @@ get_state_vax <- function(
 ) {
 
   if (keep_nat == TRUE) {
-    message("Also pulling national level data under `place = \"India\"`. Set `keep_nat == FALSE` to exclude by default")
+    cli::cli_alert_info("Also pulling national level data under `place = \"India\"`. Set `keep_nat == FALSE` to exclude by default")
   }
 
   d <- suppressWarnings(readr::read_csv(path,

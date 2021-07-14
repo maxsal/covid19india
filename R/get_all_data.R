@@ -4,6 +4,7 @@
 #' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
 #' @import dplyr
 #' @import tidyr
+#' @importFrom cli cli_alert_warning
 #' @importFrom janitor clean_names
 #' @export
 #' @examples
@@ -53,7 +54,7 @@ get_all_data <- function(
 
   if (covind19_name_scheme == TRUE) {
 
-    message("{covid19india} variable naming scheme is encouraged (`covind19_naming_scheme == FALSE`)")
+    cli::cli_alert_warning("{covid19india} variable naming scheme is encouraged (`covind19_naming_scheme == FALSE`)")
 
     d <- d %>%
       dplyr::rename(

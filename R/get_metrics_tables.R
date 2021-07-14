@@ -4,6 +4,7 @@
 #' @return Creates metrics tables for use in covind19.org
 #' @import gt
 #' @import tidyverse
+#' @import cli
 #' @importFrom glue glue
 #' @importFrom janitor clean_names
 #' @importFrom scales col_bin
@@ -127,8 +128,6 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
     mutate_if(is.character, trimws) %>%
     drop_na(`# daily new cases`) %>%
     dplyr::filter(`# daily new cases` != "NA")
-
-  message("making full table...")
 
   source_note_text <- glue(
     "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
@@ -255,7 +254,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
       locations = cells_column_spanners(("Cumulative metrics"))
     )
 
-  message("making point-in-time table...")
+  cli::cli_alert_success("full table made")
+
   # new table
   point_in_time <- tib %>%
     select(-`total cases`, -`total deaths`, -`TPR`, -CFR,
@@ -357,7 +357,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
         rows = Location == "India")
     )
 
-  message("making cumulative table...")
+  cli::cli_alert_success("point-in-time table made")
+
   cumulative <- tib %>%
     select(-`# daily new cases`, -`# daily new deaths`, -`7-day average daily TPR`,
            -`7-day average daily CFR`, -R, -`daily tests`, -`daily vaccine doses`) %>%
@@ -444,6 +445,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
       locations = cells_body(rows = Location == "India")
     )
 
+  cli::cli_alert_success("cumulative table made")
+
   if (!is.null(top20)) {
 
     t20_tib <- tib %>%
@@ -452,8 +455,6 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
       ) %>%
       dplyr::filter(abbrev %in% unique(c(top20, "tt"))) %>%
       dplyr::select(-abbrev)
-
-    message("making top 20 full table...")
 
     source_note_text <- glue(
       "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
@@ -580,7 +581,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
         locations = cells_column_spanners(("Cumulative metrics"))
       )
 
-    message("making t20 point-in-time table...")
+    cli::cli_alert_success("full top 20 table made")
+
     # new table
     t20_point_in_time <- t20_tib %>%
       select(-`total cases`, -`total deaths`, -`TPR`, -CFR,
@@ -682,7 +684,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
           rows = Location == "India")
       )
 
-    message("making top 20 cumulative table...")
+    cli::cli_alert_success("top 20 point-in-time table made")
+
     t20_cumulative <- t20_tib %>%
       select(-`# daily new cases`, -`# daily new deaths`, -`7-day average daily TPR`,
              -`7-day average daily CFR`, -R, -`daily tests`, -`daily vaccine doses`) %>%
@@ -769,10 +772,9 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
         locations = cells_body(rows = Location == "India")
       )
 
+    cli::cli_alert_success("top 20 cumulative table made")
 
   }
-
-  message("outputting...")
 
   if (is.null(top20)) {
     return(list(full       = tabl,

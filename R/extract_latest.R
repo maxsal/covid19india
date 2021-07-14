@@ -11,12 +11,13 @@
 #' }
 
 extract_latest <- function(dat, group = place, cols = c("total_tests", "tpr", "dbl", "ppt")) {
+
   out <- dat %>%
-    group_by({{ group }}) %>%
-    filter(date == max(date)) %>%
-    distinct(date, .keep_all = TRUE) %>%
-    ungroup() %>%
-    select({{ group }}, date, all_of(cols))
+    dplyr::group_by({{ group }}) %>%
+    dplyr::filter(date == max(date)) %>%
+    dplyr::distinct(date, .keep_all = TRUE) %>%
+    dplyr::ungroup() %>%
+    dplyr::select({{ group }}, date, tidyselect::all_of(cols))
 
   if ("India" %in% out[[paste0(substitute(group))]]) {
 
@@ -26,4 +27,5 @@ extract_latest <- function(dat, group = place, cols = c("total_tests", "tpr", "d
   }
 
   return(out)
+
 }
