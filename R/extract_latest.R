@@ -17,9 +17,13 @@ extract_latest <- function(dat, group = place, cols = c("total_tests", "tpr", "d
     distinct(date, .keep_all = TRUE) %>%
     ungroup() %>%
     select({{ group }}, date, all_of(cols))
-  if ("India" %in% data[[paste0(substitute(group))]]) {
+
+  if ("India" %in% out[[paste0(substitute(group))]]) {
+
     out[[paste0(substitute(group))]] <- recode(out[[paste0(substitute(group))]],
                                                "India" = "National estimate")
+
   }
+
   return(out)
 }
