@@ -1,7 +1,7 @@
 #' Pull all covid19india count, test, and vaccine data for states and nation
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
-#' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](covind19.org) application
-#' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](covid19india.org).
+#' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](https://umich-biostatistics.shinyapps.io/covid19/) application
+#' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
 #' @import dplyr
 #' @import tidyr
 #' @importFrom janitor clean_names

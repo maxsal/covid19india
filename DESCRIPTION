@@ -1,12 +1,15 @@
 Package: covid19india
 Type: Package
-Title: Pulling clean data from covid19india.org
+Title: Pulling Clean Data from Covid19india.org
 Version: 0.1.2
-Authors@R: person(given = "Max", family = "Salvatore", role = c("aut", "cre"), email = "mmsalva@umich.edu")
-Description: This package was designed while working with data on COVID-19 in India. covid19india.org is 
-    a data resource with APIs available. It is updated daily and provides count, testing, and vaccine data 
-    at the national, state, and district level. This package eases the process for R users to obtain data 
-    ready for analysis in hopes of democratizing data science and speeding up public health research.
+Authors@R: person("Max", "Salvatore", email = "mmsalva@umich.edu", role = c("aut", "cre"))
+Description: Pull raw and pre-cleaned versions of national and state-level 
+    COVID-19 time-series data from covid19india.org. Easily obtain and merge
+    case count data, testing data, and vaccine data. Also assists in 
+    calculating the time-varying effective reproduction number with sensible 
+    parameters for COVID-19.
+URL: https://github.com/maxsal/covid19india
+BugReports: https://github.com/maxsal/covid19india/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
