@@ -44,7 +44,7 @@ get_nat_tests <- function(
       dplyr::arrange(date) %>%
       dplyr::mutate(
         daily_tests = total_tests - dplyr::lag(total_tests),
-        ppt         = total_tests / (pop %>% dplyr::filter(place == "India") %>% dplyr::pull(population))
+        ppt         = total_tests / (covid19india::pop %>% dplyr::filter(place == "India") %>% dplyr::pull(population))
       )
 
   }

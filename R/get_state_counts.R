@@ -59,7 +59,7 @@ get_state_counts <- function(
         total_deaths    = cumsum(daily_deaths)
       ) %>%
       dplyr::ungroup() %>%
-      dplyr::left_join(pop %>% dplyr::select(-population), by = "abbrev") %>%
+      dplyr::left_join(covid19india::pop %>% dplyr::select(-population), by = "abbrev") %>%
       dplyr::select(-abbrev) %>%
       dplyr::select(place, dplyr::everything())
 

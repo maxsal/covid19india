@@ -29,7 +29,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL) {
   cfr1            <- get_cfr(dat) %>% distinct()
   r_est           <- get_r_est(dat)
   tp              <- dat
-  india_state_pop <- pop
+  india_state_pop <- covid19india::pop
 
   cli::cli_alert_success("data load success!!")
 
