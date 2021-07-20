@@ -17,7 +17,8 @@ Helper function for calculating R_0
 }
 \examples{
 \dontrun{
-# used in get_r0() function
+get_nat_counts() \%>\%
+  estR0_out()
 }
 
 }

@@ -36,7 +36,7 @@ get_all_data <- function(
         ),
       by = c("place", "date")) %>%
     dplyr::left_join(
-      pop %>%
+      covid19india::pop %>%
         dplyr::distinct(place, .keep_all = TRUE) %>%
         dplyr::select(-population),
       by = "place") %>%

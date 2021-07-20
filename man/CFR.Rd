@@ -19,7 +19,8 @@ Helper function for calculating case-fatality rate
 }
 \examples{
 \dontrun{
-# used in get_cfr() function
+national_data <- get_nat_counts()
+CFR(C = national_data$total_cases, D = national_data$total_deaths)
 }
 
 

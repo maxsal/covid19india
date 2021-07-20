@@ -7,7 +7,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' # extract_latest()
+#' get_all_data() %>% extract_latest()
 #' }
 
 extract_latest <- function(dat, group = place, cols = c("total_tests", "tpr", "dbl", "ppt")) {

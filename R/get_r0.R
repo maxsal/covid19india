@@ -9,7 +9,8 @@
 #' @importFrom tidyselect everything
 #' @examples
 #' \dontrun{
-#' # used in get_r0() function
+#' get_nat_counts() %>%
+#'   estR0_out()
 #' }
 #'
 
@@ -58,7 +59,7 @@ estR0_out <- function(dat) {
 #' @export
 #' @examples
 #' \dontrun{
-#' # get_nat_counts() %>% get_r0()
+#' get_nat_counts() %>% get_r0()
 #' }
 #'
 
@@ -97,8 +98,7 @@ get_r0 <- function(
     dplyr::filter(ns >=7) %>%
     dplyr::rename(daily_cases = {{ daily_var }}, place = {{ place_var }})
 
-  options(warn = -1)
-  tmp_est <- tmp_dat %>%
+  tmp_est <- suppressWarnings(tmp_dat %>%
     dplyr::select(date, daily_cases, place) %>%
     tidyr::nest(data = c(-place)) %>%
     dplyr::mutate(
@@ -107,8 +107,7 @@ get_r0 <- function(
     tidyr::unnest(estR0) %>%
     dplyr::select(-data) %>%
     dplyr::filter(date >= min_date) %>%
-    tidyr::drop_na()
-  options(warn = 1)
+    tidyr::drop_na())
 
   return(tmp_est)
 

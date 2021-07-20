@@ -25,6 +25,6 @@ Helper function
 }
 \examples{
 \dontrun{
-# extract_latest()
+get_all_data() \%>\% extract_latest()
 }
 }

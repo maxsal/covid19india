@@ -5,7 +5,8 @@
 #' @keywords internal
 #' @examples
 #' \dontrun{
-#' # used in get_cfr() function
+#' national_data <- get_nat_counts()
+#' CFR(C = national_data$total_cases, D = national_data$total_deaths)
 #' }
 #'
 #'
@@ -31,7 +32,7 @@ CFR <- function(C,D) {
 #' @export
 #' @examples
 #' \dontrun{
-#' # get_nat_counts() %>% get_cfr()
+#' get_nat_counts() %>% get_cfr()
 #' }
 #'
 

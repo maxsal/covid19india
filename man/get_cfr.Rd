@@ -17,7 +17,7 @@ Calculate case_fataility rate
 }
 \examples{
 \dontrun{
-# get_nat_counts() \%>\% get_cfr()
+get_nat_counts() \%>\% get_cfr()
 }
 
 }
