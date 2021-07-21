@@ -2,7 +2,8 @@
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/case_time_series.csv
 #' @param raw Pull raw unaltered data. Default is FALSE
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
-#' @import tidyverse
+#' @import dplyr
+#' @importFrom readr read_csv
 #' @importFrom janitor clean_names
 #' @export
 #' @examples

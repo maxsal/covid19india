@@ -24,7 +24,6 @@ Imports:
     httr,
     tibble,
     tidyr,
-    tidyverse,
     glue,
     janitor,
     magrittr,
