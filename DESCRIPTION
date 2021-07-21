@@ -1,8 +1,9 @@
 Package: covid19india
 Type: Package
 Title: Pulling Clean Data from Covid19india.org
-Version: 0.1.2
-Authors@R: person("Max", "Salvatore", email = "mmsalva@umich.edu", role = c("aut", "cre"))
+Version: 0.1.3
+Authors@R: c(person("Max", "Salvatore", email = "mmsalva@umich.edu", role = c("aut", "cre")), 
+    person("Michael", "Kleinsasser", email = "kleinsa@umich.edu", role = c("aut")))
 Description: Pull raw and pre-cleaned versions of national and state-level 
     COVID-19 time-series data from covid19india.org <https://www.covid19india.org>. 
     Easily obtain and merge case count data, testing data, and vaccine data. 
