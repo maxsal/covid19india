@@ -1,6 +1,7 @@
 #' Create metrics tables
 #' @param seed set seed
 #' @param top20 Vector of state abbreviations for top 20 table
+#' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
 #' @return Creates metrics tables for use in covind19.org
 #' @import gt
 #' @import dplyr
@@ -20,13 +21,13 @@
 #' tabs$full
 #' }
 
-get_metrics_tables <- function(seed = 46342, top20 = NULL) {
+get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
 
   cli::cli_alert_info("getting data...")
 
   set.seed(set_seed <- seed)
   today           <- Sys.Date() - 1
-  dat             <- get_all_data() %>% dplyr::filter(date <= today)
+  dat             <- get_all_data(corr_check = corr_check) %>% dplyr::filter(date <= today)
   cfr1            <- get_cfr(dat) %>% distinct()
   r_est           <- get_r_est(dat)
   tp              <- dat

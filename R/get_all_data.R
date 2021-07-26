@@ -1,6 +1,7 @@
 #' Pull all covid19india count, test, and vaccine data for states and nation
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](https://umich-biostatistics.shinyapps.io/covid19/) application
+#' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
 #' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
 #' @import dplyr
 #' @import tidyr
@@ -14,7 +15,8 @@
 
 get_all_data <- function(
   keep_nat             = TRUE,
-  covind19_name_scheme = FALSE
+  covind19_name_scheme = FALSE,
+  corr_check           = TRUE
 ) {
 
   d <- dplyr::bind_rows(
@@ -66,6 +68,17 @@ get_all_data <- function(
         pct_second       = pct_two_doses,
         daily_vax_dose   = daily_doses
       )
+
+  }
+
+  if(corr_check == TRUE) {
+
+    d <- d %>%
+      tidyr::nest(data = !place) %>%
+      dplyr::mutate(
+        data = purrr::map(data, ~covid19india::check_for_data_correction(dat = .x))
+      ) %>%
+      tidyr::unnest(data)
 
   }
 
