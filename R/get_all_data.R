@@ -30,7 +30,7 @@ get_all_data <- function(
       ),
       by = c("place", "date")) %>%
     dplyr::left_join(
-      base::suppressMessages(get_r0(.)) %>%
+      base::suppressMessages(get_r0(., corr_check = corr_check)) %>%
         dplyr::rename(
           r_est   = r,
           r_lower = lower,
@@ -68,17 +68,6 @@ get_all_data <- function(
         pct_second       = pct_two_doses,
         daily_vax_dose   = daily_doses
       )
-
-  }
-
-  if(corr_check == TRUE) {
-
-    d <- d %>%
-      tidyr::nest(data = !place) %>%
-      dplyr::mutate(
-        data = purrr::map(data, ~covid19india::check_for_data_correction(dat = .x))
-      ) %>%
-      tidyr::unnest(data)
 
   }
 

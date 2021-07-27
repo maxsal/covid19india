@@ -15,8 +15,9 @@ check_for_data_correction <- function(dat, var = "daily_cases", magnitude = 10,
                                       min_count = 10) {
 
   v         <- dat %>% dplyr::pull(var)
-  times     <- v / dplyr::lag(v)
-  times_loc <- which((times <= magnitude) & (v >= min_count))
+  v_lag     <- dplyr::lag(v)
+  times     <- v / v_lag
+  times_loc <- which((times <= magnitude) & (v_lag >= min_count))
 
   if(length(times_loc) == 0) {
 
