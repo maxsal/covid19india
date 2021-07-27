@@ -4,7 +4,12 @@
 \alias{check_for_data_correction}
 \title{Check for data corrections of X-times magnitude}
 \usage{
-check_for_data_correction(dat, var = "daily_cases", magnitude = 10)
+check_for_data_correction(
+  dat,
+  var = "daily_cases",
+  magnitude = 10,
+  min_count = 10
+)
 }
 \arguments{
 \item{dat}{data set}
@@ -12,6 +17,8 @@ check_for_data_correction(dat, var = "daily_cases", magnitude = 10)
 \item{var}{variable for which to check for corrections. Default is \code{"daily_cases"}}
 
 \item{magnitude}{magnitude of difference that qualifies as a data correction. Default is \code{10}.}
+
+\item{min_count}{minimum count of var. Default is \code{10}.}
 }
 \value{
 Data set with data correction observations removed
