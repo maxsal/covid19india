@@ -30,7 +30,7 @@ get_r0(
 
 \item{min_date}{Threshold for earliest date to report R_0. Default = \code{"2020-03-23"}.}
 
-\item{corr_check}{Check for data corrections of X-times magnitude. Default is \code{NULL}}
+\item{corr_check}{Check for data corrections of X-times magnitude. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series state-level testing data directly from covid19india.org. Expects columns named \code{place}, \code{daily_cases}, and \code{total_cases}. Can specify corresponding variables through other arguments.

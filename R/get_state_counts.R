@@ -2,7 +2,7 @@
 #' @param path The URL path for the data. Default: `https://api.covid19india.org/csv/latest/state_wise_daily.csv`
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
-#' @param corr_check Check for data correction. Default is `TRUE`
+#' @param corr_check Check for data correction. Default is `FALSE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import dplyr
 #' @import tidyr
@@ -18,7 +18,7 @@ get_state_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/state_wise_daily.csv",
   raw        = FALSE,
   keep_nat   = FALSE,
-  corr_check = TRUE
+  corr_check = FALSE
 ) {
 
   d <- readr::read_csv(path,

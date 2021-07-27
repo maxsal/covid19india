@@ -53,7 +53,7 @@ estR0_out <- function(dat) {
 #' @param daily_filter Threshold for minimum daily cases. Default = `0`.
 #' @param total_filter Threshold for minimum total cases reported to date. Default = `50`.
 #' @param min_date Threshold for earliest date to report R_0. Default = `"2020-03-23"`.
-#' @param corr_check Check for data corrections of X-times magnitude. Default is `NULL`
+#' @param corr_check Check for data corrections of X-times magnitude. Default is `FALSE`
 #' @return Pulls the time-series state-level testing data directly from covid19india.org. Expects columns named `place`, `daily_cases`, and `total_cases`. Can specify corresponding variables through other arguments.
 #' @import dplyr
 #' @importFrom janitor clean_names
