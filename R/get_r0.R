@@ -7,6 +7,8 @@
 #' @importFrom janitor clean_names
 #' @importFrom purrr map
 #' @importFrom tidyselect everything
+#' @importFrom tibble tibble
+#' @importFrom tibble add_column
 #' @examples
 #' \dontrun{
 #' get_nat_counts() %>%

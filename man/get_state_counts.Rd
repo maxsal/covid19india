@@ -8,7 +8,8 @@ get_state_counts(
   path = "https://api.covid19india.org/csv/latest/state_wise_daily.csv",
   raw = FALSE,
   keep_nat = FALSE,
-  corr_check = FALSE
+  corr_check = FALSE,
+  useDT = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ get_state_counts(
 \item{keep_nat}{Keep the national data as well. Default is \code{FALSE}}
 
 \item{corr_check}{Check for data correction. Default is \code{FALSE}}
+
+\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{TRUE}}
 }
 \value{
 Pulls the time-series case, death, and recovered data directly from covid19india.org.

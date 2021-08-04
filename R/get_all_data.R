@@ -2,6 +2,7 @@
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](https://umich-biostatistics.shinyapps.io/covid19/) application
 #' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
+#' @param useDT Use data.table backend rather than tidyverse. Default is `TRUE`
 #' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
 #' @import dplyr
 #' @import tidyr
@@ -16,12 +17,13 @@
 get_all_data <- function(
   keep_nat             = TRUE,
   covind19_name_scheme = FALSE,
-  corr_check           = TRUE
+  corr_check           = TRUE,
+  useDT                = TRUE
 ) {
 
   d <- dplyr::bind_rows(
-    covid19india::get_nat_counts(),
-    covid19india::get_state_counts()
+    covid19india::get_nat_counts(useDT = useDT),
+    covid19india::get_state_counts(useDT = useDT)
     ) %>%
     dplyr::left_join(
       dplyr::bind_rows(

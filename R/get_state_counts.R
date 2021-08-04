@@ -3,9 +3,11 @@
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
+#' @param useDT Use data.table backend rather than tidyverse. Default is `TRUE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import dplyr
 #' @import tidyr
+#' @import data.table
 #' @importFrom janitor clean_names
 #' @importFrom readr read_csv
 #' @export
@@ -18,9 +20,11 @@ get_state_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/state_wise_daily.csv",
   raw        = FALSE,
   keep_nat   = FALSE,
-  corr_check = FALSE
+  corr_check = FALSE,
+  useDT      = TRUE
 ) {
 
+  if (useDT == FALSE) {
   d <- readr::read_csv(path,
                        col_types = readr::cols())
 
@@ -64,6 +68,36 @@ get_state_counts <- function(
       dplyr::left_join(covid19india::pop %>% dplyr::select(-population), by = "abbrev") %>%
       dplyr::select(-abbrev) %>%
       dplyr::select(place, dplyr::everything())
+
+  }
+
+  } else {
+
+    d <- data.table::fread(path, showProgress = FALSE)
+
+    if (raw == FALSE) {
+
+      d[, Date := NULL][, DH := DD + DN][, `:=` (DD = NULL, DN = NULL)][]
+
+      data.table::setnames(d, names(d), janitor::make_clean_names(names(d)))
+      data.table::setnames(d, "date_ymd", "date")
+
+      d <- data.table::melt(d, id.vars = c("date", "status"), variable.name = "abbrev")
+
+      d <- data.table::dcast(d, date + abbrev ~ status)
+
+      d<- d[abbrev != "un" & Confirmed >= 0 & Deceased >= 0 & Recovered >= 0]
+
+      data.table::setnames(d, c("Confirmed", "Deceased", "Recovered"), c("daily_cases", "daily_deaths", "daily_recovered"))
+
+      d[order(date), `:=` (total_cases = cumsum(daily_cases), total_deaths = cumsum(daily_deaths), total_recovered = cumsum(daily_recovered)) , by = abbrev]
+
+      d <- data.table::merge.data.table(d, as.data.table(covid19india::pop)[, !c("population")], by = "abbrev", all.x = TRUE)[, !c("abbrev")]
+
+      data.table::setkeyv(d, cols = c("place", "date"))
+      data.table::setcolorder(d, c("place", "date"))
+
+    }
 
   }
 

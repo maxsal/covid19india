@@ -28,7 +28,7 @@ CFR <- function(C,D) {
 #' @param dat Input dataset. Expects `total_cases` and `total_deaths` variables
 #' @return Calculates a case-fatality rate estimate and corresponding 95% confidence interval
 #' @import dplyr
-#' @import tibble tibble
+#' @importFrom tibble tibble
 #' @export
 #' @examples
 #' \dontrun{
