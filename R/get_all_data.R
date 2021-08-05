@@ -18,7 +18,7 @@ get_all_data <- function(
   keep_nat             = TRUE,
   covind19_name_scheme = FALSE,
   corr_check           = TRUE,
-  useDT                = TRUE
+  useDT                = FALSE
 ) {
 
   d <- dplyr::bind_rows(

@@ -9,7 +9,7 @@ get_state_counts(
   raw = FALSE,
   keep_nat = FALSE,
   corr_check = FALSE,
-  useDT = TRUE
+  useDT = FALSE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ get_state_counts(
 
 \item{corr_check}{Check for data correction. Default is \code{FALSE}}
 
-\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{TRUE}}
+\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series case, death, and recovered data directly from covid19india.org.

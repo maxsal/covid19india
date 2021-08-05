@@ -3,7 +3,7 @@
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
-#' @param useDT Use data.table backend rather than tidyverse. Default is `TRUE`
+#' @param useDT Use data.table backend rather than tidyverse. Default is `FALSE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import dplyr
 #' @import tidyr
@@ -21,7 +21,7 @@ get_state_counts <- function(
   raw        = FALSE,
   keep_nat   = FALSE,
   corr_check = FALSE,
-  useDT      = TRUE
+  useDT      = FALSE
 ) {
 
   if (useDT == FALSE) {
