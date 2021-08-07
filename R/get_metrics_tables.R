@@ -155,7 +155,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_style(
       style = cell_text(
         size      = px(12),
-        color     = "#999",
+        color     = "#999999",
         font      = "helvetica",
         transform = "uppercase"
       ),
@@ -212,7 +212,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_style(
       style = cell_text(
         size      = px(14),
-        color     = "#999",
+        color     = "#999999",
         font      = "helvetica",
         transform = "uppercase"
       ),
@@ -276,7 +276,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_style(
       style = cell_text(
         size      = px(12),
-        color     = "#999",
+        color     = "#999999",
         font      = "helvetica",
         transform = "uppercase"
       ),
@@ -327,7 +327,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_style(
       style = cell_text(
         size      = px(14),
-        color     = "#999",
+        color     = "#999999",
         font      = "helvetica",
         transform = "uppercase"
       ),
@@ -378,7 +378,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_style(
       style = cell_text(
         size      = px(12),
-        color     = "#999",
+        color     = "#999999",
         font      = "helvetica",
         transform = "uppercase"
       ),
@@ -425,7 +425,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_style(
       style = cell_text(
         size      = px(14),
-        color     = "#999",
+        color     = "#999999",
         font      = "helvetica",
         transform = "uppercase"
       ),
@@ -482,7 +482,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_style(
         style = cell_text(
           size      = px(12),
-          color     = "#999",
+          color     = "#999999",
           font      = "helvetica",
           transform = "uppercase"
         ),
@@ -539,7 +539,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_style(
         style = cell_text(
           size      = px(14),
-          color     = "#999",
+          color     = "#999999",
           font      = "helvetica",
           transform = "uppercase"
         ),
@@ -603,7 +603,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_style(
         style = cell_text(
           size      = px(12),
-          color     = "#999",
+          color     = "#999999",
           font      = "helvetica",
           transform = "uppercase"
         ),
@@ -654,7 +654,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_style(
         style = cell_text(
           size      = px(14),
-          color     = "#999",
+          color     = "#999999",
           font      = "helvetica",
           transform = "uppercase"
         ),
@@ -705,7 +705,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_style(
         style = cell_text(
           size      = px(12),
-          color     = "#999",
+          color     = "#999999",
           font      = "helvetica",
           transform = "uppercase"
         ),
@@ -752,7 +752,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_style(
         style = cell_text(
           size      = px(14),
-          color     = "#999",
+          color     = "#999999",
           font      = "helvetica",
           transform = "uppercase"
         ),
