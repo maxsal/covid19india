@@ -18,7 +18,7 @@ get_all_data(
 
 \item{corr_check}{Check for data corrections of X-times magnitude. Default is \code{TRUE}}
 
-\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{TRUE}}
+\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{FALSE}}
 }
 \value{
 Pulls the district-level time-series case, death, and recovered data directly from \href{https://www.covid19india.org}{\code{covid19india.org}}.

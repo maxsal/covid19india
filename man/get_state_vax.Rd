@@ -7,7 +7,8 @@
 get_state_vax(
   path = "https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv",
   raw = FALSE,
-  keep_nat = TRUE
+  keep_nat = TRUE,
+  useDT = FALSE
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_state_vax(
 \item{raw}{Pull raw unaltered data. Default is FALSE}
 
 \item{keep_nat}{Keep national level data? Default is TRUE}
+
+\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series state-level vaccine data directly from covid19india.org.

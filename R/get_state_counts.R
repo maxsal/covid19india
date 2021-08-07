@@ -25,6 +25,7 @@ get_state_counts <- function(
 ) {
 
   if (useDT == FALSE) {
+
   d <- readr::read_csv(path,
                        col_types = readr::cols())
 
@@ -77,7 +78,7 @@ get_state_counts <- function(
 
     if (raw == FALSE) {
 
-      d[, Date := NULL][, DH := DD + DN][, `:=` (DD = NULL, DN = NULL)][]
+      d <- d[, Date := NULL][, DH := DD + DN][, `:=` (DD = NULL, DN = NULL)][]
 
       data.table::setnames(d, names(d), janitor::make_clean_names(names(d)))
       data.table::setnames(d, "date_ymd", "date")
@@ -86,7 +87,7 @@ get_state_counts <- function(
 
       d <- data.table::dcast(d, date + abbrev ~ status)
 
-      d<- d[abbrev != "un" & Confirmed >= 0 & Deceased >= 0 & Recovered >= 0]
+      d <- d[abbrev != "un"]
 
       data.table::setnames(d, c("Confirmed", "Deceased", "Recovered"), c("daily_cases", "daily_deaths", "daily_recovered"))
 
@@ -95,7 +96,7 @@ get_state_counts <- function(
       d <- data.table::merge.data.table(d, as.data.table(covid19india::pop)[, !c("population")], by = "abbrev", all.x = TRUE)[, !c("abbrev")]
 
       data.table::setkeyv(d, cols = c("place", "date"))
-      data.table::setcolorder(d, c("place", "date"))
+      data.table::setcolorder(d, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
 
     }
 

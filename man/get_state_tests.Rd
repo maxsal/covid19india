@@ -6,13 +6,16 @@
 \usage{
 get_state_tests(
   path = "https://api.covid19india.org/csv/latest/statewise_tested_numbers_data.csv",
-  raw = FALSE
+  raw = FALSE,
+  useDT = FALSE
 )
 }
 \arguments{
 \item{path}{The URL path for the data. Default: https://api.covid19india.org/csv/latest/statewise_tested_numbers_data.csv}
 
 \item{raw}{Pull raw unaltered data. Default is FALSE}
+
+\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series state-level testing data directly from covid19india.org.
