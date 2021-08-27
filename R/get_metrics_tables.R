@@ -52,7 +52,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       dailyTPR7 = daily_cases/daily_tests,
       dailyCFR7 = daily_deaths/daily_cases
     ) %>%
-    dplyr::filter(is.finite(dailyTPR7)) %>%
+    #dplyr::filter(is.finite(dailyTPR7)) %>%
     dplyr::mutate(dailyTPR7d = mean(dailyTPR7, na.rm = T),
                   dailyCFR7d = mean(dailyCFR7, na.rm = T)) %>%
     dplyr::filter(date == max(as.Date(date))) %>%
