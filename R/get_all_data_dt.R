@@ -1,0 +1,75 @@
+#' Pull all covid19india count, test, and vaccine data for states and nation - data.table style
+#' @param keep_nat Keep the national data as well. Default is `FALSE`
+#' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](https://umich-biostatistics.shinyapps.io/covid19/) application
+#' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
+#' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
+#' @import dplyr
+#' @import tidyr
+#' @import data.table
+#' @importFrom cli cli_alert_warning
+#' @importFrom janitor clean_names
+#' @export
+#' @examples
+#' \dontrun{
+#' get_all_data()
+#' }
+
+get_all_data_dt <- function(
+  keep_nat             = TRUE,
+  covind19_name_scheme = FALSE,
+  corr_check           = TRUE
+) {
+
+  d <- data.table::merge.data.table(
+    data.table::rbindlist(list(
+      covid19india::get_nat_counts_dt(),
+      covid19india::get_state_counts_dt()
+    )),
+    data.table::rbindlist(list(
+      covid19india::get_nat_tests_dt(),
+      covid19india::get_state_tests_dt()
+    )),
+    by    = c("place", "date"),
+    all.x = TRUE
+  )
+
+  d <- data.table::merge.data.table(
+    d,
+    get_r0_dt(dat = d, corr_check = corr_check)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+    by    = c("place", "date"),
+    all.x = TRUE
+  )
+
+  d <- data.table::merge.data.table(
+    d,
+    unique(covid19india::pop[, .(place, abbrev)][, head(.SD, 1), by = "place"]),
+    by    = "place",
+    all.x = TRUE
+  )
+
+  d <- data.table::merge.data.table(
+    d[, tpr := daily_cases / daily_tests],
+    base::suppressMessages(covid19india::get_state_vax()),
+    by = c("place", "date"),
+    all.x = TRUE
+  )
+
+  if (keep_nat == FALSE) {
+
+    d <- d[place != "India"]
+
+  }
+
+  if (covind19_name_scheme == TRUE) {
+
+    cli::cli_alert_warning("{covid19india} variable naming scheme is encouraged (`covind19_naming_scheme == FALSE`)")
+
+    setnames(d,
+             old = c("daily_cases", "daily_recovered", "daily_deaths", "total_doses", "pct_one_doses",
+                     "pct_two_doses", "daily_doses"),
+             new = c("cases", "recovered", "deaths", "total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))
+  }
+
+  return(d)
+
+}
