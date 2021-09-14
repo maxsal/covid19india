@@ -7,8 +7,7 @@
 get_nat_counts(
   path = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw = FALSE,
-  corr_check = FALSE,
-  useDT = FALSE
+  corr_check = FALSE
 )
 }
 \arguments{
@@ -17,8 +16,6 @@ get_nat_counts(
 \item{raw}{Pull raw unaltered data. Default is \code{FALSE}}
 
 \item{corr_check}{Check for data correction. Default is \code{FALSE}}
-
-\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series case, death, and recovered data directly from covid19india.org.
@@ -28,7 +25,7 @@ Pull covid19india national time series data
 }
 \examples{
 \dontrun{
-get_nat_counts()
+get_nat_counts_dt()
 }
 
 }

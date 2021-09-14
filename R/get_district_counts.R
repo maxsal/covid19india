@@ -2,10 +2,8 @@
 #' @param path The URL path for the data. Default: `https://api.covid19india.org/csv/latest/districts.csv`
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @return Pulls the district-level time-series case, death, and recovered data directly from covid19india.org.
-#' @import dplyr
-#' @import tidyr
+#' @import data.table
 #' @importFrom janitor clean_names
-#' @importFrom readr read_csv
 #' @export
 #' @examples
 #' \dontrun{
@@ -17,31 +15,31 @@ get_district_counts <- function(
   raw        = FALSE
 ) {
 
-  d <- readr::read_csv(path,
-                       col_types = readr::cols())
+  d <- data.table::fread(path, showProgress = FALSE)
 
   if (raw == FALSE) {
 
-    d <- d %>%
-      janitor::clean_names() %>%
-      dplyr::rename(
-        total_cases     = confirmed,
-        total_recovered = recovered,
-        total_deaths    = deceased
-      ) %>%
-      dplyr::filter(dplyr::select(., where(is.numeric)) >= 0) %>%
-      dplyr::group_by(state, district) %>%
-      dplyr::arrange(date) %>%
-      dplyr::mutate(
-        daily_cases     = total_cases - dplyr::lag(total_cases),
-        daily_recovered = total_recovered - dplyr::lag(total_recovered),
-        daily_deaths    = total_deaths - dplyr::lag(total_deaths)
-      ) %>%
-      tidyr::drop_na(daily_cases, daily_recovered, daily_deaths) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(state, district, date,
-                    daily_cases, daily_recovered, daily_deaths,
-                    total_cases, total_recovered, total_deaths)
+    d <- d |>
+      {\(x) setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
+      {\(x) setnames(x, c("confirmed", "recovered", "deceased"), c("total_cases", "total_recovered", "total_deaths"))}() |>
+      data.table::DT(, !c("other")) |>
+      data.table::melt(id.vars = c("date", "state", "district")) |>
+      data.table::DT(value >= 0) |>
+      data.table::dcast.data.table(date + state + district ~ variable) |>
+      data.table::DT(order(date)) |>
+      data.table::DT(, `:=` (
+        daily_cases     = total_cases - data.table::shift(total_cases),
+        daily_recovered = total_recovered - data.table::shift(total_recovered),
+        daily_deaths    = total_deaths - data.table::shift(total_deaths)
+      ), by = c("state", "district")) |>
+      data.table::DT(!is.na(daily_cases) & !is.na(daily_recovered) & !is.na(daily_deaths)) |>
+      data.table::DT(, date := as.Date(date)) |>
+      data.table::DT(, .(state, district, date,
+                         daily_cases, daily_recovered, daily_deaths,
+                         total_cases, total_recovered, total_deaths)) |>
+      {\(x) na.omit(x, c("daily_cases", "daily_recovered", "daily_deaths"))}() |>
+      data.table::setkeyv(cols = c("state", "district", "date")) |>
+      data.table::DT()
 
   }
 
