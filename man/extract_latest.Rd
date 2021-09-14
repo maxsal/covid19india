@@ -4,11 +4,7 @@
 \alias{extract_latest}
 \title{Helper function}
 \usage{
-extract_latest(
-  dat,
-  group = place,
-  clmns = c("total_tests", "tpr", "dbl", "ppt")
-)
+extract_latest(dat, group = place, clmns = c("total_tests", "tpr", "ppt"))
 }
 \arguments{
 \item{dat}{data set}
