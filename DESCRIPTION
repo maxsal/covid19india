@@ -15,21 +15,15 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports:
+    data.table (>= 1.14.1),
     EpiEstim,
     cli,
-    dplyr,
     gt,
     httr,
-    tibble,
-    tidyr,
     glue,
     janitor,
-    magrittr,
     scales,
-    purrr,
-    readr,
-    stringr,
-    tidyselect
-Depends: R (>= 3.6)
+    stringr
+Depends: R (>= 4.1)

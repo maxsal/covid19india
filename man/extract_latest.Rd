@@ -7,7 +7,7 @@
 extract_latest(
   dat,
   group = place,
-  cols = c("total_tests", "tpr", "dbl", "ppt")
+  clmns = c("total_tests", "tpr", "dbl", "ppt")
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ extract_latest(
 
 \item{group}{place variable}
 
-\item{cols}{columns to be extracted}
+\item{clmns}{columns to be extracted}
 }
 \value{
 Data set of recent observations of selected variables
@@ -25,6 +25,6 @@ Helper function
 }
 \examples{
 \dontrun{
-get_all_data() \%>\% extract_latest()
+get_all_data() |> extract_latest()
 }
 }

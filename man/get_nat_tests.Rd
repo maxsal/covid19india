@@ -4,18 +4,12 @@
 \alias{get_nat_tests}
 \title{Pull covid19india national time series test data}
 \usage{
-get_nat_tests(
-  path = "https://api.covid19india.org/data.json",
-  raw = FALSE,
-  useDT = FALSE
-)
+get_nat_tests(path = "https://api.covid19india.org/data.json", raw = FALSE)
 }
 \arguments{
 \item{path}{The URL path for the data. Default: \verb{https://api.covid19india.org/data.json}}
 
 \item{raw}{Pull raw unaltered data. Default is \code{FALSE}}
-
-\item{useDT}{Use data.table backend rather than tidyverse. Default is \code{FALSE}}
 }
 \value{
 Pulls the time-series test data directly from covid19india.org.

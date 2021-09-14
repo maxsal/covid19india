@@ -2,81 +2,37 @@
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/case_time_series.csv
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
-#' @param useDT Use data.table backend rather than tidyverse. Default is `FALSE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
-#' @import dplyr
-#' @importFrom data.table fread
-#' @importFrom data.table setnames
-#' @importFrom data.table setkeyv
-#' @importFrom data.table setcolorder
-#' @importFrom readr read_csv
+#' @import data.table
 #' @importFrom janitor clean_names
 #' @export
 #' @examples
 #' \dontrun{
-#' get_nat_counts()
+#' get_nat_counts_dt()
 #' }
 #'
 
 get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw        = FALSE,
-  corr_check = FALSE,
-  useDT      = FALSE
+  corr_check = FALSE
 ) {
-
-  if (useDT == FALSE) {
-  d <- readr::read_csv(path,
-                       col_types = readr::cols())
-
-  if (raw == FALSE) {
-
-    d <- d %>%
-      janitor::clean_names() %>%
-      dplyr::select(-date) %>%
-      dplyr::rename(
-        date         = date_ymd,
-        daily_cases  = daily_confirmed,
-        total_cases  = total_confirmed,
-        daily_deaths = daily_deceased,
-        total_deaths = total_deceased
-        ) %>%
-      dplyr::mutate(
-        place = "India"
-      ) %>%
-      dplyr::select(place, date, daily_cases, daily_recovered, daily_deaths, everything())
-
-  }
-
-  if (corr_check == TRUE) {
-
-    if (raw == TRUE) {
-      stop("`raw` must be FALSE to use `corr_check = TRUE` argument")
-    } else {
-
-    d <- d %>%
-      covid19india::check_for_data_correction(var = "daily_cases")
-
-    }
-  }
-
-  } else {
 
     d <- data.table::fread(path, showProgress = FALSE)
 
     if (raw == FALSE) {
 
-    d[, Date := NULL]
-
-    data.table::setnames(d, names(d), janitor::make_clean_names(names(d)))
-    data.table::setnames(d,
-                         c("date_ymd", "daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
-                         c("date", "daily_cases", "total_cases", "daily_deaths", "total_deaths"))
-
-    d[, place := "India"][]
-
-    data.table::setcolorder(d, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
-    data.table::setkeyv(d, cols = c("place", "date"))
+    d <- d |>
+      data.table::DT(, Date := NULL) |>
+      {\(x) setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
+      {\(x) setnames(x,
+                     c("date_ymd", "daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
+                     c("date", "daily_cases", "total_cases", "daily_deaths", "total_deaths"))}() |>
+      data.table::DT(, place := "India") |>
+      data.table::DT(, date := as.Date(date)) |>
+      {\(x) data.table::setcolorder(x, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))}() |>
+      data.table::setkeyv(cols = c("place", "date")) |>
+      data.table::DT()
 
     }
 
@@ -88,8 +44,6 @@ get_nat_counts <- function(
         d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")
       }
     }
-
-  }
 
   return(d)
 
