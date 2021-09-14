@@ -29,9 +29,9 @@ remotes::install_github("maxsal/covid19india")
 
 ## Coming soon :movie_camera:
 
-- :chart_with_upwards_trend: Basic plotting
-- :house_with_garden: District-level data
-- :wrench: Improved function arguments
+- :racing_car: migrating from `tidyverse` syntax to `data.table`
+    - We are moving to `data.table` for speed and reduced dependencies
+    - This update will also require R 4.1.0+ (uses native pipe)
 
 ## Example
 

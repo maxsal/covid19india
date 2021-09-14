@@ -22,13 +22,13 @@ get_all_data_dt <- function(
 
   d <- data.table::merge.data.table(
     data.table::rbindlist(list(
-      covid19india::get_nat_counts_dt(),
-      covid19india::get_state_counts_dt()
-    )),
+      get_nat_counts_dt(),
+      get_state_counts_dt()
+    ), fill = TRUE),
     data.table::rbindlist(list(
-      covid19india::get_nat_tests_dt(),
-      covid19india::get_state_tests_dt()
-    )),
+      get_nat_tests_dt(),
+      get_state_tests_dt()
+    ), fill = TRUE),
     by    = c("place", "date"),
     all.x = TRUE
   )
@@ -49,7 +49,7 @@ get_all_data_dt <- function(
 
   d <- data.table::merge.data.table(
     d[, tpr := daily_cases / daily_tests],
-    base::suppressMessages(covid19india::get_state_vax()),
+    base::suppressMessages(get_state_vax_dt()),
     by = c("place", "date"),
     all.x = TRUE
   )
