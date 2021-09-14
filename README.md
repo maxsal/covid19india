@@ -48,11 +48,17 @@ state_tests <- get_state_tests()
 state_vax   <- get_state_vax()
 
 # estimate r0 ----------
-nat_count %>% get_r0()
-state_count %>% get_r0()
+nat_count |> get_r0()
+state_count |> get_r0()
 
 ```
 ## Versions
+
+### Announcement
+* covid19india.org is ceasing to maintain their website at the end of October. We are currently seeking alternate data sources which will be integrated into the package for future use. Expected released ith v0.1.5.
+
+### Version 0.1.4
+* A rebuild of the package with a `data.table` backend. Improved performance on the order of 4x to 18x. 
 
 ### Version 0.1.2
 * First CRAN submission! Find `covid19india` on CRAN @ [https://cran.r-project.org/package=covid19india](https://cran.r-project.org/package=covid19india)
