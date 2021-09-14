@@ -16,7 +16,7 @@ check_for_data_correction <- function(dat, var = "daily_cases", magnitude = 10,
                                       min_count = 10) {
 
   v     <- dat[, var, with = FALSE]
-  v_lag <- data.table::shift(v)
+  v_lag <- data.table::shift(v)[[1]]
   times <- v / v_lag
   times_loc <- which((times <= magnitude) & (v_lag >= min_count))
 

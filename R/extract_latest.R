@@ -10,18 +10,19 @@
 #' get_all_data() |> extract_latest()
 #' }
 
-extract_latest <- function(dat, group = place, clmns = c("total_tests", "tpr", "dbl", "ppt")) {
+extract_latest <- function(dat, group = place, clmns = c("total_tests", "tpr", "ppt")) {
 
   out <- dat |>
-    {\(x) x[x[, .I[date == max(date)], by = "place"]$V1]}() |>
-    data.table::DT(, c("place", "date", clmns), with = FALSE)
+    {\(x) x[x[, .I[date == max(date)], by = "place"]$V1]}()
+
+  out <- out[, c("place", "date", clmns), with = FALSE]
 
   if ("India" %in% out[[paste0(substitute(group))]]) {
 
-    out[, place := data.table::fcase(place == "India", "National estimate", place != "India", place)]
+    out <- out[, place := data.table::fcase(place == "India", "National estimate", place != "India", place)]
 
   }
 
-  return(out)
+  return(out[])
 
 }

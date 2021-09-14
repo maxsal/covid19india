@@ -12,7 +12,7 @@
 #' }
 #'
 
-estR0_out_dt <- function(x) {
+estR0_out <- function(x) {
 
   t_start   <- seq(2, nrow(x) - 4)
   t_end     <- t_start + 4
@@ -68,7 +68,8 @@ get_r0 <- function(
     if(corr_check == TRUE) {
 
       tmp_dat <- dat |>
-        data.table::DT(daily_cases > daily_filter & total_cases >= total_filter) |>
+        subset(daily_cases > daily_filter & total_cases >= total_filter) |>
+        # data.table::DT(.(daily_cases > daily_filter & total_cases >= total_filter)) |>
         data.table::DT(, ns := .N, by = place) |>
         data.table::DT(ns >= 7)
 
@@ -79,7 +80,7 @@ get_r0 <- function(
     } else {
 
       tmp_dat <- dat |>
-        data.table::DT(daily_cases > daily_filter & total_cases >= total_filter) |>
+        subset(daily_cases > daily_filter & total_cases >= total_filter) |>
         data.table::DT(, ns := .N, by = place) |>
         data.table::DT(ns >= 7)
 
@@ -95,7 +96,7 @@ get_r0 <- function(
     stats::na.omit(
     data.table::rbindlist(
       lapply(tmp_dat[, unique(place)],
-             \(x) estR0_out_dt(tmp_dat[place == x]))
+             \(x) estR0_out(tmp_dat[place == x]))
       )[date >= min_date]
     )
     )

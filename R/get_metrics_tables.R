@@ -36,7 +36,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
 
   # state data ----------
   vax_dat <- get_state_vax() |>
-    {\(x) setnames(x, c("total_doses", "pct_one_doses", "pct_two_doses", "daily_doses"), c("total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))}() |>
+    {\(x) setnames(x, c("total_doses", "pct_one_dose", "pct_two_doses", "daily_doses"), c("total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))}() |>
     na.omit() |>
     data.table::DT(, place := data.table::fifelse(place == "India", "National estimate", place)) |>
     data.table::DT(date == max(date))
