@@ -41,6 +41,32 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     data.table::DT(, place := data.table::fifelse(place == "India", "National estimate", place)) |>
     data.table::DT(date == max(date))
 
+  # TEMPORARY: pull ICMR for the national tests data (expires October 30, 2021)
+  icmr <- read_csv("https://api.covid19india.org/csv/latest/tested_numbers_icmr_data.csv",
+                   col_types = cols()) %>%
+    clean_names() %>%
+    mutate(
+      date = as.Date(tested_as_of, "%d/%m/%Y") - 1
+    ) %>%
+    select(date, total_samples_tested, sample_reported_today)
+
+  icmr_nat_date_limit = as.Date(icmr$date %>% range(na.rm = TRUE))
+
+  tp_nat = tp[tp$place == "India" & tp$date <= icmr_nat_date_limit[2] & tp$date >= icmr_nat_date_limit[1], ]
+
+  # icmr = icmr[tp_nat$date %in% icmr$date , ]
+  icmr = tail(icmr, 30)
+
+  tp_nat = tail(tp_nat, 30)
+
+  tp_rest = tp[tp$place != "India"]
+
+  tp_nat$daily_tests = icmr$sample_reported_today
+
+  tp_nat$tpr = tp_nat$daily_cases / tp_nat$daily_tests
+
+  tp = bind_rows(tp_nat, tp_rest)
+
   sf <- tp |>
     data.table::setkeyv(cols = "place") |>
     {\(x) x[x[, .I[date > max(as.Date(date) - 7)], by = "place"]$V1]}() |>
@@ -55,6 +81,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
                      total_tested = trimws(format(total_tests, big.mark = ",")),
                      ppt = round(ppt * 100, digits = 2))) |>
     data.table::merge.data.table(vax_dat, by = "place", all.x = TRUE)
+
 
   # table ----------
   tib <- cfr1[, .(place, cfr)] |>
@@ -89,6 +116,11 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
                        `% pop. with at least one shot`))
 
   tib <- unique(tib[, !c("Total tested")][, Location := data.table::fifelse(Location == "National estimate", "India", Location)])
+
+
+
+  # tib[tib$Location == "India", "7-day average daily TPR"] = icmr$tpr7dave
+  # tib[tib$Location == "India", "TPR"] = icmr$tpr
 
   source_note_text <- glue::glue(
     "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
