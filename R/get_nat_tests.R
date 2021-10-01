@@ -33,6 +33,7 @@ get_nat_tests <- function(
     data.table::DT(, !c("tested_as_of", "total_samples_tested")) |>
     data.table::setkeyv(cols = c("place", "date")) |>
     data.table::setcolorder(c("place", "date", "daily_tests", "total_tests", "ppt")) |>
+    data.table::DT(!is.na(place)) |>
     data.table::DT()
 
   return(d)

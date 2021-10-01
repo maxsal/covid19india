@@ -23,7 +23,7 @@ get_nat_counts <- function(
     if (raw == FALSE) {
 
     d <- d |>
-      data.table::DT(, Date := NULL) |>
+      data.table::DT(, !c("Date")) |>
       {\(x) setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
       {\(x) setnames(x,
                      c("date_ymd", "daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
