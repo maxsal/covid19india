@@ -24,7 +24,8 @@ get_state_counts <- function(
     if (raw == FALSE) {
 
       d <- d |>
-        data.table::DT(, `:=` (Date = NULL, DH = DD + DN)) |>
+        data.table::DT(, !c("Date")) |>
+        data.table::DT(, DH := DD + DN) |>
         data.table::DT(, `:=` (DD = NULL, DN = NULL)) |>
         {\(x) data.table::setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
         data.table::setnames("date_ymd", "date") |>
