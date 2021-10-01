@@ -6,6 +6,8 @@
 #' @import gt
 #' @import data.table
 #' @import cli
+#' @import dplyr
+#' @import readr
 #' @importFrom glue glue
 #' @importFrom janitor clean_names
 #' @importFrom scales col_bin
