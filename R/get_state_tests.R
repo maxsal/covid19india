@@ -30,8 +30,7 @@ get_state_tests <- function(
         data.table::DT(, ppt := total_tests / population) |>
         data.table::DT(, !c("population")) |>
         data.table::setkeyv(cols = c("place", "date")) |>
-        data.table::setcolorder(c("place", "date", "daily_tests", "total_tests", "ppt")) |>
-        data.table::DT()
+        data.table::setcolorder(c("place", "date", "daily_tests", "total_tests", "ppt"))
 
     }
 

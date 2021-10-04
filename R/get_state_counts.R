@@ -26,7 +26,7 @@ get_state_counts <- function(
       d <- d |>
         data.table::DT(, !c("Date")) |>
         data.table::DT(, DH := DD + DN) |>
-        data.table::DT(, `:=` (DD = NULL, DN = NULL)) |>
+        data.table::DT(, !c("DD", "DN")) |>
         {\(x) data.table::setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
         data.table::setnames("date_ymd", "date") |>
         data.table::melt(id.vars = c("date", "status"), variable.name = "abbrev") |>
@@ -47,8 +47,7 @@ get_state_counts <- function(
         data.table::merge.data.table(as.data.table(covid19india::pop)[, !c("population")], by = "abbrev", all.x = TRUE) |>
         data.table::DT(, !c("abbrev")) |>
         data.table::setkeyv(cols = c("place", "date")) |>
-        data.table::setcolorder(neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths")) |>
-        data.table::DT()
+        data.table::setcolorder(neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
 
     }
 

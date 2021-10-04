@@ -41,8 +41,7 @@ get_state_vax <- function(
         data.table::DT(order(date), daily_doses := total_doses - data.table::shift(total_doses), by = "place") |>
         {\(x) data.table::setcolorder(x, c("place", "date", "first_dose", "second_dose", "total_doses",
                                         "pct_one_dose", "pct_two_doses", "daily_doses"))}() |>
-        data.table::setkeyv(cols = c("place", "date")) |>
-        data.table::DT()
+        data.table::setkeyv(cols = c("place", "date"))
 
     }
 

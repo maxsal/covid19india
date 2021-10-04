@@ -31,8 +31,7 @@ get_nat_counts <- function(
       data.table::DT(, place := "India") |>
       data.table::DT(, date := as.Date(date)) |>
       {\(x) data.table::setcolorder(x, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))}() |>
-      data.table::setkeyv(cols = c("place", "date")) |>
-      data.table::DT()
+      data.table::setkeyv(cols = c("place", "date"))
 
     }
 
