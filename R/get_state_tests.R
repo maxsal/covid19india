@@ -19,18 +19,20 @@ get_state_tests <- function(
 
     if (raw == FALSE) {
 
-      d <- d |>
-        {\(x) data.table::setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
-        data.table::DT(, date := as.Date(updated_on, "%d/%m/%Y")) |>
-        data.table::DT(, .(date, place = state, total_tests = total_tested)) |>
-        unique() |>
-        data.table::DT(order(date), daily_tests := total_tests - data.table::shift(total_tests), by = place) |>
-        data.table::DT(, .(place, date, daily_tests, total_tests)) |>
-        data.table::merge.data.table(unique(covid19india::pop[, !c("abbrev")]), all.x = TRUE, by = "place") |>
-        data.table::DT(, ppt := total_tests / population) |>
-        data.table::DT(, !c("population")) |>
-        data.table::setkeyv(cols = c("place", "date")) |>
-        data.table::setcolorder(c("place", "date", "daily_tests", "total_tests", "ppt"))
+      setnames(d, names(d), janitor::make_clean_names(names(d)))
+
+      d <- unique(d[, date := as.Date(updated_on, "%d/%m/%Y")][, .(date, place = state, total_tests = total_tested)])
+
+      d <- d[order(date), daily_tests := total_tests - data.table::shift(total_tests), by = place][
+        , .(place, date, daily_tests, total_tests)
+      ]
+
+      d <- data.table::merge.data.table(d, unique(covid19india::pop[, !c("abbrev")]), all.x = TRUE, by = "place")[
+        , ppt := total_tests / population
+      ][, !c("population")][!(is.na(daily_tests) & is.na(total_tests) & is.na(ppt))]
+
+      setkeyv(d, cols = c("place", "date"))
+      setcolorder(d, c("place", "date", "daily_tests", "total_tests", "ppt"))
 
     }
 

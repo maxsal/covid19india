@@ -18,22 +18,27 @@ get_nat_tests <- function(
 
   d <- fread(path, showProgress = FALSE)
 
-  d <- d |>
-    {\(x) setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
-    data.table::DT(, .(tested_as_of, total_samples_tested)) |>
-    data.table::DT(, `:=` (
-      place = "India",
-      date = as.Date(tested_as_of, "%d/%m/%Y"),
-      total_tests = total_samples_tested)
-      )  |>
-    {\(x) x[x[, .I[total_tests == max(total_tests)], by = "date"]$V1]}() |>
-    data.table::DT(order(date), `:=`
-       (daily_tests = total_tests - data.table::shift(total_tests),
-         ppt        = total_tests / (covid19india::pop[place == "India", population]))) |>
-    data.table::DT(, !c("tested_as_of", "total_samples_tested")) |>
-    data.table::setkeyv(cols = c("place", "date")) |>
-    data.table::setcolorder(c("place", "date", "daily_tests", "total_tests", "ppt")) |>
-    data.table::DT(!is.na(place))
+  if (raw == FALSE) {
+
+    setnames(d, names(d), janitor::make_clean_names(names(d)))
+
+    d <- d[, .(tested_as_of, total_samples_tested)][
+      , `:=` (
+        place = "India",
+        date = as.Date(tested_as_of, "%d/%m/%Y"),
+        total_tests = total_samples_tested)
+    ][, .SD[total_tests == max(total_tests)], by = "date"][
+      order(date), `:=`
+      (daily_tests = total_tests - data.table::shift(total_tests),
+        ppt        = total_tests / (covid19india::pop[place == "India", population]))
+    ][, !c("tested_as_of", "total_samples_tested")][!is.na(place)]
+
+    setkeyv(d, cols = c("place", "date"))
+    setcolorder(d, c("place", "date", "daily_tests", "total_tests", "ppt"))
+
+  }
+
+
 
   return(d)
 

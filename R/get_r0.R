@@ -7,8 +7,7 @@
 #' @importFrom janitor clean_names
 #' @examples
 #' \dontrun{
-#' get_nat_counts_dt() |>
-#'   estR0_out_dt()
+#' estR0_out_dt(x = get_nat_counts())
 #' }
 #'
 
@@ -51,7 +50,7 @@ estR0_out <- function(x) {
 #' @export
 #' @examples
 #' \dontrun{
-#' get_nat_counts() |> get_r0()
+#' get_r0(dat = get_nat_counts())
 #' }
 #'
 
@@ -67,22 +66,15 @@ get_r0 <- function(
 
     if(corr_check == TRUE) {
 
-      tmp_dat <- dat |>
-        subset(daily_cases > daily_filter & total_cases >= total_filter) |>
-        # data.table::DT(.(daily_cases > daily_filter & total_cases >= total_filter)) |>
-        data.table::DT(, ns := .N, by = place) |>
-        data.table::DT(ns >= 7)
+      tmp_dat <- dat[daily_cases > daily_filter & total_cases >= total_filter][, ns := .N, by = "place"][ns >= 7]
 
       tmp_dat <- rbindlist(
-          lapply(tmp_dat[, unique(place)], \(x) covid19india::check_for_data_correction(tmp_dat[place == x]))
+          lapply(tmp_dat[, unique(place)], function(x) covid19india::check_for_data_correction(tmp_dat[place == x]))
         )
 
     } else {
 
-      tmp_dat <- dat |>
-        subset(daily_cases > daily_filter & total_cases >= total_filter) |>
-        data.table::DT(, ns := .N, by = place) |>
-        data.table::DT(ns >= 7)
+      tmp_date <- dat[daily_cases > daily_filter & total_cases >= total_filter][, ns := .N, by = "place"][ns >= 7]
 
     }
 
@@ -96,7 +88,7 @@ get_r0 <- function(
     stats::na.omit(
     data.table::rbindlist(
       lapply(tmp_dat[, unique(place)],
-             \(x) estR0_out(tmp_dat[place == x]))
+             function(x) estR0_out(tmp_dat[place == x]))
       )[date >= min_date]
     )
     )

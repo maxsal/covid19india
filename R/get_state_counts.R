@@ -23,31 +23,31 @@ get_state_counts <- function(
 
     if (raw == FALSE) {
 
-      d <- d |>
-        data.table::DT(, !c("Date")) |>
-        data.table::DT(, DH := DD + DN) |>
-        data.table::DT(, !c("DD", "DN")) |>
-        {\(x) data.table::setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
-        data.table::setnames("date_ymd", "date") |>
-        data.table::melt(id.vars = c("date", "status"), variable.name = "abbrev") |>
-        data.table::dcast(date + abbrev ~ status) |>
-        data.table::DT(abbrev != "un") |>
-        data.table::setnames(
-          c("Confirmed", "Deceased", "Recovered"),
-          c("daily_cases", "daily_deaths", "daily_recovered")
-          ) |>
-        data.table::DT(daily_cases >= 0) |>
-        data.table::DT(order(date), `:=` (
-          total_cases     = cumsum(daily_cases),
-          total_deaths    = cumsum(daily_deaths),
-          total_recovered = cumsum(daily_recovered)
-        ),
-        by = abbrev) |>
-        data.table::DT(, date := as.Date(date)) |>
-        data.table::merge.data.table(as.data.table(covid19india::pop)[, !c("population")], by = "abbrev", all.x = TRUE) |>
-        data.table::DT(, !c("abbrev")) |>
-        data.table::setkeyv(cols = c("place", "date")) |>
-        data.table::setcolorder(neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
+      d <- d[, !c("Date")][, DH := DD + DN][, !c("DD", "DN")]
+      setnames(d, names(d), janitor::make_clean_names(names(d)))
+      setnames(d, "date_ymd", "date")
+
+      d <- data.table::melt(d, id.vars = c("date", "status"), variable.name = "abbrev")
+      d <- data.table::dcast(d, date + abbrev ~ status)
+      d <- d[abbrev != "un"]
+
+      setnames(d,
+               c("Confirmed", "Deceased", "Recovered"),
+               c("daily_cases", "daily_deaths", "daily_recovered"))
+
+      d <- d[daily_cases >= 0][order(date),
+                               `:=` (
+                                 total_cases     = cumsum(daily_cases),
+                                 total_deaths    = cumsum(daily_deaths),
+                                 total_recovered = cumsum(daily_recovered)
+                               ),
+                               by = abbrev][,
+                                            date := as.Date(date)]
+
+      d <- data.table::merge.data.table(d, covid19india::pop[, !c("population")], by = "abbrev", all.x = TRUE)[, !c("abbrev")]
+
+      setkeyv(d, cols = c("place", "date"))
+      setcolorder(d, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
 
     }
 
@@ -71,7 +71,7 @@ get_state_counts <- function(
 
       d <- data.table::rbindlist(
         lapply(d[, unique(place)],
-               \(x) covid19india::check_for_data_correction(d[place == x]))
+               function(x) covid19india::check_for_data_correction(d[place == x]))
       )
 
     }

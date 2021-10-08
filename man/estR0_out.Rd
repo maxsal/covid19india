@@ -17,8 +17,7 @@ Helper function for calculating R_0 - data.table style
 }
 \examples{
 \dontrun{
-get_nat_counts_dt() |>
-  estR0_out_dt()
+estR0_out_dt(x = get_nat_counts())
 }
 
 }

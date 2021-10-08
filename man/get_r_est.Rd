@@ -17,6 +17,6 @@ Helper function for pulling latest R estimates
 }
 \examples{
 \dontrun{
-get_all_data() |> get_r_est()
+get_r_est(x = get_all_data())
 }
 }

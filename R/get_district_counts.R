@@ -19,27 +19,28 @@ get_district_counts <- function(
 
   if (raw == FALSE) {
 
-    d <- d |>
-      {\(x) setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
-      {\(x) setnames(x, c("confirmed", "recovered", "deceased"), c("total_cases", "total_recovered", "total_deaths"))}() |>
-      data.table::DT(, !c("other")) |>
-      data.table::melt(id.vars = c("date", "state", "district")) |>
-      data.table::DT(value >= 0) |>
-      data.table::dcast.data.table(date + state + district ~ variable) |>
-      data.table::DT(order(date)) |>
-      data.table::DT(, `:=` (
+    setnames(d, names(d), janitor::make_clean_names(names(d)))
+    setnames(d, c("confirmed", "recovered", "deceased"), c("total_cases", "total_recovered", "total_deaths"))
+
+    d <- data.table::melt(d[, !c("other")], id.vars = c("date", "state", "district"))[value >= 0]
+
+    d <- data.table::dcast.data.table(d, date + state + district ~ variable)[order(date)][
+      , `:=` (
         daily_cases     = total_cases - data.table::shift(total_cases),
         daily_recovered = total_recovered - data.table::shift(total_recovered),
         daily_deaths    = total_deaths - data.table::shift(total_deaths)
-      ), by = c("state", "district")) |>
-      data.table::DT(!is.na(daily_cases) & !is.na(daily_recovered) & !is.na(daily_deaths)) |>
-      data.table::DT(, date := as.Date(date)) |>
-      data.table::DT(, .(state, district, date,
-                         daily_cases, daily_recovered, daily_deaths,
-                         total_cases, total_recovered, total_deaths)) |>
-      {\(x) na.omit(x, c("daily_cases", "daily_recovered", "daily_deaths"))}() |>
-      data.table::setkeyv(cols = c("state", "district", "date")) |>
-      data.table::DT()
+      ), by = c("state", "district")
+    ][!is.na(daily_cases) & !is.na(daily_recovered) & !is.na(daily_deaths)][
+      , date := as.Date(date)
+    ][
+      , .(state, district, date,
+          daily_cases, daily_recovered, daily_deaths,
+          total_cases, total_recovered, total_deaths)
+    ]
+
+    d <- na.omit(d, c("daily_cases", "daily_recovered", "daily_deaths"))
+
+    setkeyv(d, cols = c("state", "district", "date"))
 
   }
 

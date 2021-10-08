@@ -28,7 +28,6 @@ Check for data corrections of X-times magnitude - data.table style
 }
 \examples{
 \dontrun{
-get_nat_counts() |>
-    check_for_data_correction(var = "daily_cases", magnitude = 10)
+check_for_data_correction(dat = get_nat_counts, var = "daily_cases", magnitude = 10)
 }
 }

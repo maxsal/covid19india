@@ -25,5 +25,6 @@ Imports:
     glue,
     janitor,
     scales,
-    stringr
-Depends: R (>= 4.1)
+    stringr,
+    magrittr
+Depends: R (>= 3.6)
