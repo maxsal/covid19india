@@ -31,7 +31,7 @@ CFR <- function(C,D) {
 #' @export
 #' @examples
 #' \dontrun{
-#' get_nat_counts() |> get_cfr()
+#' get_cfr(x = get_nat_counts())
 #' }
 #'
 

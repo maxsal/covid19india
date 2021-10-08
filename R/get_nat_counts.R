@@ -22,17 +22,18 @@ get_nat_counts <- function(
 
     if (raw == FALSE) {
 
-    d <- d |>
-      data.table::DT(, Date := NULL) |>
-      {\(x) setnames(x, names(x), janitor::make_clean_names(names(x)))}() |>
-      {\(x) setnames(x,
-                     c("date_ymd", "daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
-                     c("date", "daily_cases", "total_cases", "daily_deaths", "total_deaths"))}() |>
-      data.table::DT(, place := "India") |>
-      data.table::DT(, date := as.Date(date)) |>
-      {\(x) data.table::setcolorder(x, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))}() |>
-      data.table::setkeyv(cols = c("place", "date")) |>
-      data.table::DT()
+      d <- d[, !c("Date")]
+      setnames(d, names(d), janitor::make_clean_names(names(d)))
+      setnames(d,
+               c("date_ymd", "daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
+               c("date", "daily_cases", "total_cases", "daily_deaths", "total_deaths"))
+
+      d <- d[, `:=` (place = "India", date = as.Date(date))]
+
+      setcolorder(d,
+                  neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
+
+      setkeyv(d, cols = c("place", "date"))
 
     }
 

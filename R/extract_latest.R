@@ -7,13 +7,12 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' get_all_data() |> extract_latest()
+#' extract_latest(dat = get_all_data())
 #' }
 
 extract_latest <- function(dat, group = place, clmns = c("total_tests", "tpr", "ppt")) {
 
-  out <- dat |>
-    {\(x) x[x[, .I[date == max(date)], by = "place"]$V1]}()
+  out <- dat[, .SD[date == max(date)], by = "place"]
 
   out <- out[, c("place", "date", clmns), with = FALSE]
 

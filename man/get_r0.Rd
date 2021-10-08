@@ -31,7 +31,7 @@ Calculate r0
 }
 \examples{
 \dontrun{
-get_nat_counts() |> get_r0()
+get_r0(dat = get_nat_counts())
 }
 
 }
