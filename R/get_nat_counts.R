@@ -2,6 +2,7 @@
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/case_time_series.csv
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
+#' @param mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import data.table
 #' @importFrom janitor clean_names
@@ -15,8 +16,11 @@
 get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw        = FALSE,
-  corr_check = FALSE
+  corr_check = FALSE,
+  mohfw      = FALSE
 ) {
+
+  if (mohfw == FALSE) {
 
     d <- data.table::fread(path, showProgress = FALSE)
 
@@ -45,6 +49,38 @@ get_nat_counts <- function(
         d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")
       }
     }
+
+  }
+
+  if (mohfw == TRUE) {
+
+    d <- fread("https://raw.githubusercontent.com/umich-cphds/cov-ind-19-data/master/source_data/source_data_latest.csv",
+               showProgress = FALSE)
+
+    setnames(d,
+             old = c("State", "Date", "Cases", "Recovered", "Deaths", "Active", "source"),
+             new = c("place", "date", "total_cases", "total_recovered", "total_deaths", "total_active", "source"))
+
+    d <- d[, date := as.Date(date, "%d/%m/%Y")]
+
+    d <- d[, lapply(.SD, sum, na.rm = TRUE), by = date, .SDcols = c("total_cases", "total_deaths", "total_recovered")][
+      , place := "India"
+      ][
+        , `:=` (
+          daily_cases     = total_cases - shift(total_cases),
+          daily_deaths    = total_deaths - shift(total_deaths),
+          daily_recovered = total_recovered - shift(total_recovered)
+        )
+      ][]
+
+    d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")[daily_cases < 0, daily_cases := 0][daily_deaths < 0 , daily_deaths := 0][daily_recovered < 0, daily_recovered := 0][]
+
+    setcolorder(d,
+                neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
+
+    setkeyv(d, cols = c("place", "date"))
+
+  }
 
   return(d)
 

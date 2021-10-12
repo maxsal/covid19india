@@ -3,6 +3,7 @@
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
+#' @param mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import data.table
 #' @importFrom janitor clean_names
@@ -16,9 +17,11 @@ get_state_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/state_wise_daily.csv",
   raw        = FALSE,
   keep_nat   = FALSE,
-  corr_check = FALSE
+  corr_check = FALSE,
+  mohfw      = FALSE
 ) {
 
+  if (mohfw == FALSE) {
     d <- data.table::fread(path, showProgress = FALSE)
 
     if (raw == FALSE) {
@@ -51,30 +54,60 @@ get_state_counts <- function(
 
     }
 
-  if (keep_nat == FALSE) {
-    if (raw == FALSE) {
-      d <- d[place != "India"]
+    if (keep_nat == FALSE) {
+      if (raw == FALSE) {
+        d <- d[place != "India"]
+      }
+      if (raw == TRUE) {
+        d <- d[, !c("TT")]
+      }
+
     }
-    if (raw == TRUE) {
-      d <- d[, !c("TT")]
+
+    if (corr_check == TRUE) {
+
+      if (raw == TRUE) {
+
+        stop("`raw` must be FALSE to use `corr_check = TRUE` argument")
+
+      } else {
+
+        d <- data.table::rbindlist(
+          lapply(d[, unique(place)],
+                 function(x) covid19india::check_for_data_correction(d[place == x]))
+        )
+
+      }
+
     }
 
   }
 
-  if (corr_check == TRUE) {
+  if (mohfw == TRUE) {
 
-    if (raw == TRUE) {
+    d <- fread("https://raw.githubusercontent.com/umich-cphds/cov-ind-19-data/master/source_data/source_data_latest.csv",
+               showProgress = FALSE)
 
-      stop("`raw` must be FALSE to use `corr_check = TRUE` argument")
+    setnames(d,
+             old = c("State", "Date", "Cases", "Recovered", "Deaths", "Active", "source"),
+             new = c("place", "date", "total_cases", "total_recovered", "total_deaths", "total_active", "source"))
 
-    } else {
+    d <- d[, date := as.Date(date, "%d/%m/%Y")]
 
-      d <- data.table::rbindlist(
-        lapply(d[, unique(place)],
-               function(x) covid19india::check_for_data_correction(d[place == x]))
-      )
+    d <- d[order(date)
+      , `:=` (
+        daily_cases     = total_cases - shift(total_cases),
+        daily_deaths    = total_deaths - shift(total_deaths),
+        daily_recovered = total_recovered - shift(total_recovered)
+      ), by = place
+    ][]
 
-    }
+    # d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")[daily_cases < 0, daily_cases := 0][daily_deaths < 0 , daily_deaths := 0][daily_recovered < 0, daily_recovered := 0][]
+
+    setcolorder(d,
+                neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
+
+    setkeyv(d, cols = c("place", "date"))
 
   }
 

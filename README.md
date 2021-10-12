@@ -29,9 +29,8 @@ remotes::install_github("maxsal/covid19india")
 
 ## Coming soon :movie_camera:
 
-- :racing_car: migrating from `tidyverse` syntax to `data.table`
-    - We are moving to `data.table` for speed and reduced dependencies
-    - This update will also require R 4.1.0+ (uses native pipe)
+- :racing_car: migrating data sources [`v0.1.5`]
+  - In light of covid19india shutting down, we are switching count data to scrape the Ministry of Health and Family Welfare site and pull vaccine data from CoWIN. At this time, a suitable replacement for state-level test data.
 
 ## Example
 
@@ -56,8 +55,11 @@ get_r0(state_count)
 ### Announcement
 * covid19india.org is ceasing to maintain their website at the end of October. We are currently seeking alternate data sources which will be integrated into the package for future use. Expected released with v0.1.5.
 
+### Version 0.1.5
+* Switching data sources in light of covid19india shutting down
+
 ### Version 0.1.4
-* A rebuild of the package with a `data.table` backend. Improved performance on the order of 4x to 18x. Fewer dependencies. Removed dependencies on R 4.1+ and data.table development version 1.14.3 from earlier version of dev0.1.4.
+* ~NOW ON CRAN~ A rebuild of the package with a `data.table` backend. Improved performance on the order of 4x to 18x. Fewer dependencies. Removed dependencies on R 4.1+ and data.table development version 1.14.3 from earlier version of dev0.1.4.
 
 ### Version 0.1.2
 * First CRAN submission! Find `covid19india` on CRAN @ [https://cran.r-project.org/package=covid19india](https://cran.r-project.org/package=covid19india)
