@@ -439,7 +439,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
 
   if (!is.null(top20)) {
 
-    t20_tib <- data.table::merge.data.table(tib, covid19india::pop[, !c("population")], by.x = "Location", by.y = "place")[abbrev %in% unique(c(top20, "tt"))][, !c("abbrev")][]
+    t20_tib <- data.table::merge.data.table(tib, covid19india::pop[, !c("population")], by.x = "Location", by.y = "place")[abbrev %in% unique(c(top20, "tt"))][, !c("abbrev")][order(-`total cases`)]
 
     source_note_text <- glue(
       "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
