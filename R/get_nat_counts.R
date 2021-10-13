@@ -55,7 +55,7 @@ get_nat_counts <- function(
   if (mohfw == TRUE) {
 
     d <- fread("https://raw.githubusercontent.com/umich-cphds/cov-ind-19-data/master/source_data/source_data_latest.csv",
-               showProgress = FALSE)
+               showProgress = FALSE, fill = TRUE)
 
     setnames(d,
              old = c("State", "Date", "Cases", "Recovered", "Deaths", "Active", "source"),

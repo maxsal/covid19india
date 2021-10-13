@@ -51,7 +51,7 @@ get_state_vax <- function(
   if (mohfw == TRUE) {
 
     d <- fread("https://raw.githubusercontent.com/umich-cphds/cov-ind-19-data/master/source_data/vax/cowin_vax_latest.csv",
-               showProgress = FALSE)
+               showProgress = FALSE, fill = TRUE)
 
     d <- data.table::merge.data.table(d, unique(covid19india::pop[, !c("abbrev")]), by = "place", all.x = TRUE)[
       , `:=` (pct_one_dose  = round(first_dose * 100 / population, 4),
