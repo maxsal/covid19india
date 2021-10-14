@@ -22,87 +22,52 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
   cli::cli_alert_info("getting data...")
 
   set.seed(set_seed <- seed)
-  today           <- Sys.Date() - 1
-  dat             <- get_all_data(corr_check = corr_check)[date <= today]
-  cfr1            <- unique(get_cfr(dat))
-  r_est           <- get_r_est(dat)
-  tp              <- dat
+  today           <- Sys.Date()
+  all_data <- get_all_data(corr_check = corr_check)[date <= today][, !c("raw_timestamp", "pull_time")]
+  # dat             <- get_all_data(corr_check = corr_check)[date <= today]
+  cfr1            <- unique(get_cfr(all_data))[place == "National estimate", place := "India"][]
+  r_est           <- get_r_est(all_data[!is.na(r_est)])
   india_state_pop <- covid19india::pop
 
   cli::cli_alert_success("data load success!!")
 
   # pull abbrevs -----------
-  use_abbrevs <- tolower(unique(tp[abbrev != "la", abbrev]))
+  use_abbrevs <- tolower(unique(all_data[abbrev != "la", abbrev]))
 
-  # state data ----------
-  vax_dat <- get_state_vax()
+  # vax data ----------
+  vax_dat <- get_state_vax()[date <= today][, !c("source", "raw_timestamp", "pull_time")]
   setnames(vax_dat, c("total_doses", "pct_one_dose", "pct_two_doses", "daily_doses"), c("total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))
 
-  vax_dat <- na.omit(vax_dat)[,place := data.table::fifelse(place == "India", "National estimate", place)][date == max(date)]
+  vax_dat <- vax_dat[!is.na(total_vacc)][, .SD[date == max(date)], by = "place"]
 
-  # TEMPORARY: pull ICMR for the national tests data (expires October 30, 2021)
-  icmr <- fread("https://api.covid19india.org/csv/latest/tested_numbers_icmr_data.csv", showProgress = FALSE)
+  all_data <- unique(all_data[, .SD[date > max(as.Date(date) - 7)], by = "place"][, dailyCFR7 := daily_deaths / daily_cases][, dailyCFR7d := mean(dailyCFR7, na.rm = T), by = "place"][, .SD[date == max(date)], by = "place"][])[, .(place, dailyCFR7d, daily_cases, daily_deaths, total_cases, total_deaths)]
 
-  setnames(icmr, names(icmr), janitor::make_clean_names(names(icmr)))
+  all_data <- data.table::merge.data.table(all_data, covid19india::pop[, .SD[1], by = "place"], by = "place", all.x = TRUE)
 
-  icmr <- icmr[, date := as.Date(tested_as_of, "%d/%m/%Y") - 1][, .(date, total_samples_tested, sample_reported_today)]
-
-  icmr_nat_date_limit <- range(icmr$date, na.rm = TRUE)
-
-  tp_nat <- tp[tp$place == "India" & tp$date <= icmr_nat_date_limit[2] & tp$date >= icmr_nat_date_limit[1]]
-
-  icmr    <- utils::tail(icmr, 30)
-  tp_nat  <- utils::tail(tp_nat, 30)
-  tp_rest <- tp[tp$place != "India"]
-
-  tp_nat$daily_tests <- as.numeric(icmr$sample_reported_today)
-  tp_nat[, tpr := daily_cases / daily_tests]
-  # tp_nat$tpr         <- tp_nat$daily_cases / tp_nat$daily_tests
-
-  tp <- rbindlist(list(tp_nat, tp_rest))
-
-  setkeyv(tp, cols = "place")
-
-  sf <- unique(tp[, .SD[date > max(as.Date(date) - 7)], by = "place"][
-    , `:=` (dailyTPR7 = daily_cases / daily_tests, dailyCFR7 = daily_deaths / daily_cases)
-  ][
-    , `:=` (dailyTPR7d = mean(dailyTPR7, na.rm = T), dailyCFR7d = mean(dailyCFR7, na.rm = T)), by = "place"
-  ][, .SD[date == max(date)], by = "place"])
-
-  sf <- sf[, .(place, total_tests, ppt, dailyTPR7d, dailyCFR7d,
-               daily_cases, daily_deaths, daily_tests, total_cases, total_deaths)]
-
-  sf <- data.table::merge.data.table(sf, covid19india::pop, by = "place", all.x = TRUE)[
-    , `:=` (place = data.table::fifelse(place == "India", "National estimate", place),
-            total_tested = trimws(format(total_tests, big.mark = ",")),
-            ppt = round(ppt * 100, digits = 2))
-  ]
-
-  sf <- data.table::merge.data.table(sf, vax_dat, by = "place", all.x = TRUE)
+  all_data <- data.table::merge.data.table(all_data, vax_dat, by = "place", all.x = TRUE)
 
   # table ----------
   tib <- cfr1[, .(place, cfr)]
 
-  tib <- data.table::merge.data.table(tib, r_est[, place := data.table::fifelse(place == "India", "National estimate", place)][, .(place, r)], by = "place", all.x = TRUE)
+  tib <- data.table::merge.data.table(tib, r_est[, .(place, r)], by = "place", all.x = TRUE)
 
-  tib <- data.table::merge.data.table(tib, extract_latest(tp, clmns = c("tpr")), by = "place", all.x = TRUE)
+  # tib <- data.table::merge.data.table(tib, extract_latest(tp, clmns = c("tpr")), by = "place", all.x = TRUE)
 
-  tib <- data.table::merge.data.table(tib, sf, by = "place", all.x = TRUE)[
+  tib <- data.table::merge.data.table(tib, all_data, by = "place", all.x = TRUE)[
     , `:=` (
       perc_vaccine   = pct_at_least_one,
       total_vacc     = format(total_vacc, big.mark = ","),
       daily_cases    = format(daily_cases, big.mark = ","),
       daily_deaths   = format(daily_deaths, big.mark = ","),
-      daily_tests    = format(daily_tests, big.mark = ","),
       daily_vax_dose = format(daily_vax_dose, big.mark = ","),
       cases          = format(total_cases, big.mark = ","),
       deaths         = format(total_deaths, big.mark = ",")
     )
-  ]
+  ][]
 
   setnames(tib,
-           old = c( "daily_cases", "daily_deaths", "dailyTPR7d", "dailyCFR7d", "r", "daily_tests", "daily_vax_dose", "place", "cfr", "cases", "deaths", "tpr", "total_tested", "perc_vaccine", "total_vacc", "pct_second", "pct_at_least_one"),
-           new = c("# daily new cases", "# daily new deaths", "7-day average daily TPR", "7-day average daily CFR", "R", "daily tests", "daily vaccine doses", "Location", "CFR", "total cases","total deaths", "TPR", "Total tested", "Percent with at least one dose", "Total doses", "% pop. with two shots", "% pop. with at least one shot"))
+           old = c( "daily_cases", "daily_deaths", "dailyCFR7d", "r", "daily_vax_dose", "place", "cfr", "cases", "deaths", "perc_vaccine", "total_vacc", "pct_second", "pct_at_least_one"),
+           new = c("# daily new cases", "# daily new deaths",  "7-day average daily CFR", "R", "daily vaccine doses", "Location", "CFR", "total cases","total deaths",  "Percent with at least one dose", "Total doses", "% pop. with two shots", "% pop. with at least one shot"))
 
   tib <- tib[order(-`total_cases`)][
     , `:=` (
@@ -111,14 +76,13 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       `% pop. with at least one shot` = round(`% pop. with at least one shot`, digits = 2)
     )
   ][
-    , .(`# daily new cases`, `# daily new deaths`, `7-day average daily TPR`,
-        `7-day average daily CFR`, Location, R, `daily tests`,
-        `daily vaccine doses`, CFR, `Total tested`, `total cases`,
-        `total deaths`, `Total doses`, `TPR`,`% pop. with two shots`,
+    , .(`# daily new cases`, `# daily new deaths`, `7-day average daily CFR`,
+        Location, R, `daily vaccine doses`, CFR, `total cases`,
+        `total deaths`, `Total doses`, `% pop. with two shots`,
         `% pop. with at least one shot`)
   ]
 
-  tib <- unique(tib[, !c("Total tested")][, Location := data.table::fifelse(Location == "National estimate", "India", Location)])
+  tib <- unique(tib)
 
   source_note_text <- glue::glue(
     "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
@@ -152,7 +116,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     ) %>%
     # format numbers
     fmt_number(
-      columns  = c(CFR, `7-day average daily TPR`, TPR),
+      columns  = c(CFR),
       decimals = 3
     ) %>%
     fmt_number(
@@ -189,12 +153,12 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     # add and format column spanners
     tab_spanner(
       label   = "Point in time metrics",
-      columns = c(`# daily new cases`, `# daily new deaths`, `7-day average daily TPR`,
-                  `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
+      columns = c(`# daily new cases`, `# daily new deaths`,
+                  `7-day average daily CFR`, R, `daily vaccine doses`)
     ) %>%
     tab_spanner(
       label   = "Cumulative metrics",
-      columns = c(`total cases`, `total deaths`, `TPR`, CFR,
+      columns = c(`total cases`, `total deaths`, CFR,
                   `Total doses`, `% pop. with two shots`, `% pop. with at least one shot`)
     ) %>%
     cols_move_to_start((Location)) %>%
@@ -221,10 +185,6 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     data_color(
       columns = c(R),
       colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
-    ) %>%
-    data_color(
-      columns = c(`7-day average daily TPR`),
-      colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
     ) %>%
     # highlight national estimate
     tab_style(

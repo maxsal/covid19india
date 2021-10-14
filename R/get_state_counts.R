@@ -3,7 +3,7 @@
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
-#' @param mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
+#' @param mohfw switch to mohfw default is `TRUE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import data.table
 #' @importFrom janitor clean_names
@@ -18,7 +18,7 @@ get_state_counts <- function(
   raw        = FALSE,
   keep_nat   = FALSE,
   corr_check = FALSE,
-  mohfw      = FALSE
+  mohfw      = TRUE
 ) {
 
   if (mohfw == FALSE) {

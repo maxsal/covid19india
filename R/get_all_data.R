@@ -18,7 +18,7 @@ get_all_data <- function(
   keep_nat             = TRUE,
   covind19_name_scheme = FALSE,
   corr_check           = TRUE,
-  mohfw                = FALSE
+  mohfw                = TRUE
 ) {
 
   if (mohfw == FALSE) {

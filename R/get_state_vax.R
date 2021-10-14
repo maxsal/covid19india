@@ -2,7 +2,7 @@
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv
 #' @param raw Pull raw unaltered data. Default is FALSE
 #' @param keep_nat Keep national level data? Default is TRUE
-#' @param mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
+#' @param mohfw switch to mohfw. default is `TRUE`
 #' @return Pulls the time-series state-level vaccine data directly from covid19india.org.
 #' @import data.table
 #' @importFrom cli cli_alert_info
@@ -17,7 +17,7 @@ get_state_vax <- function(
   path       = "https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv",
   raw        = FALSE,
   keep_nat   = TRUE,
-  mohfw      = FALSE
+  mohfw      = TRUE
 ) {
 
   if (mohfw == FALSE) {

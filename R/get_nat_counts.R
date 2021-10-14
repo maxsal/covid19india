@@ -2,7 +2,7 @@
 #' @param path The URL path for the data. Default: https://api.covid19india.org/csv/latest/case_time_series.csv
 #' @param raw Pull raw unaltered data. Default is `FALSE`
 #' @param corr_check Check for data correction. Default is `FALSE`
-#' @param mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
+#' @param mohfw switch to mohfw default is `TRUE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import data.table
 #' @importFrom janitor clean_names
@@ -17,7 +17,7 @@ get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw        = FALSE,
   corr_check = FALSE,
-  mohfw      = FALSE
+  mohfw      = TRUE
 ) {
 
   if (mohfw == FALSE) {
