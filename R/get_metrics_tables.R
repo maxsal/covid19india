@@ -270,7 +270,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     tab_spanner(
       label   = "Point in time metrics",
       columns = c(`# daily new cases`, `# daily new deaths`,
-                  `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
+                  `7-day average daily CFR`, R, `daily vaccine doses`)
     ) %>%
     cols_move_to_start((Location)) %>%
     tab_style(
@@ -471,7 +471,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_spanner(
         label   = "Point in time metrics",
         columns = c(`# daily new cases`, `# daily new deaths`,
-                    `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
+                    `7-day average daily CFR`, R, `daily vaccine doses`)
       ) %>%
       tab_spanner(
         label   = "Cumulative metrics",
@@ -583,7 +583,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       tab_spanner(
         label   = "Point in time metrics",
         columns = c(`# daily new cases`, `# daily new deaths`,
-                    `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
+                    `7-day average daily CFR`, R, `daily vaccine doses`)
       ) %>%
       cols_move_to_start((Location)) %>%
       tab_style(
