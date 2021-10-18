@@ -232,10 +232,10 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       locations = cells_column_labels(everything())
     ) %>%
     # format numbers
-    fmt_number(
-      columns  = c(`7-day average daily TPR`),
-      decimals = 3
-    ) %>%
+    # fmt_number(
+    #   # columns  = c(`7-day average daily TPR`),
+    #   decimals = 3
+    # ) %>%
     fmt_number(
       columns  = c(R),
       decimals = 2
@@ -269,7 +269,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     ) %>%
     tab_spanner(
       label   = "Point in time metrics",
-      columns = c(`# daily new cases`, `# daily new deaths`, `7-day average daily TPR`,
+      columns = c(`# daily new cases`, `# daily new deaths`,
                   `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
     ) %>%
     cols_move_to_start((Location)) %>%
@@ -297,10 +297,10 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       columns = c(R),
       colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
     ) %>%
-    data_color(
-      columns = c(`7-day average daily TPR`),
-      colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
-    ) %>%
+    # data_color(
+    #   columns = c(`7-day average daily TPR`),
+    #   colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
+    # ) %>%
     # highlight national estimate
     tab_style(
       style = cell_fill(color = "#fcf8d4"),
@@ -334,7 +334,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     ) %>%
     # format numbers
     fmt_number(
-      columns  = c(CFR, TPR),
+      columns  = c(CFR),
       decimals = 3
     ) %>%
     # random formatting
@@ -366,7 +366,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     ) %>%
     tab_spanner(
       label   = "Cumulative metrics",
-      columns = c(`total cases`, `total deaths`, `TPR`, CFR,
+      columns = c(`total cases`, `total deaths`, CFR,
                   `Total doses`, `% pop. with two shots`, `% pop. with at least one shot`)
     ) %>%
     cols_move_to_start((Location)) %>%
@@ -433,7 +433,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       ) %>%
       # format numbers
       fmt_number(
-        columns  = c(CFR, `7-day average daily TPR`, TPR),
+        columns  = c(CFR),
         decimals = 3
       ) %>%
       fmt_number(
@@ -470,12 +470,12 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       # add and format column spanners
       tab_spanner(
         label   = "Point in time metrics",
-        columns = c(`# daily new cases`, `# daily new deaths`, `7-day average daily TPR`,
+        columns = c(`# daily new cases`, `# daily new deaths`,
                     `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
       ) %>%
       tab_spanner(
         label   = "Cumulative metrics",
-        columns = c(`total cases`, `total deaths`, `TPR`, CFR,
+        columns = c(`total cases`, `total deaths`, CFR,
                     `Total doses`, `% pop. with two shots`, `% pop. with at least one shot`)
       ) %>%
       cols_move_to_start((Location)) %>%
@@ -502,10 +502,6 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       data_color(
         columns = c(R),
         colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
-      ) %>%
-      data_color(
-        columns = c(`7-day average daily TPR`),
-        colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
       ) %>%
       # highlight national estimate
       tab_style(
@@ -554,10 +550,6 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       ) %>%
       # format numbers
       fmt_number(
-        columns  = c(`7-day average daily TPR`),
-        decimals = 3
-      ) %>%
-      fmt_number(
         columns  = c(R),
         decimals = 2
       ) %>%
@@ -590,7 +582,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       ) %>%
       tab_spanner(
         label   = "Point in time metrics",
-        columns = c(`# daily new cases`, `# daily new deaths`, `7-day average daily TPR`,
+        columns = c(`# daily new cases`, `# daily new deaths`,
                     `7-day average daily CFR`, R, `daily tests`, `daily vaccine doses`)
       ) %>%
       cols_move_to_start((Location)) %>%
@@ -617,10 +609,6 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       data_color(
         columns = c(R),
         colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0,1,1000), pretty = F)
-      ) %>%
-      data_color(
-        columns = c(`7-day average daily TPR`),
-        colors = scales::col_bin(c("#FFFFFF", "#fae0de"), domain = NULL, bins = c(0, 0.05, 1), pretty = F, na.color = "#e8e8e8")
       ) %>%
       # highlight national estimate
       tab_style(
@@ -655,7 +643,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       ) %>%
       # format numbers
       fmt_number(
-        columns  = c(CFR, TPR),
+        columns  = c(CFR),
         decimals = 3
       ) %>%
       # random formatting
@@ -687,7 +675,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
       ) %>%
       tab_spanner(
         label   = "Cumulative metrics",
-        columns = c(`total cases`, `total deaths`, `TPR`, CFR,
+        columns = c(`total cases`, `total deaths`, CFR,
                     `Total doses`, `% pop. with two shots`, `% pop. with at least one shot`)
       ) %>%
       cols_move_to_start((Location)) %>%
