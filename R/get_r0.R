@@ -74,7 +74,7 @@ get_r0 <- function(
 
     } else {
 
-      tmp_date <- dat[daily_cases > daily_filter & total_cases >= total_filter][, ns := .N, by = "place"][ns >= 7]
+      tmp_dat <- dat[daily_cases > daily_filter & total_cases >= total_filter][, ns := .N, by = "place"][ns >= 7]
 
     }
 
