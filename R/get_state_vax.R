@@ -58,7 +58,9 @@ get_state_vax <- function(
               pct_two_doses = round(second_dose * 100/ population, 4))
     ][, !c("population")][
       order(date), daily_doses := total_doses - data.table::shift(total_doses), by = "place"
-    ][]
+    ][, !c("raw_timestamp", "pull_time")][]
+
+    suppressWarnings({ d <- d[place == "Puducherry", place := "Pondicherry"]})
 
     setcolorder(d, c("place", "date", "first_dose", "second_dose", "total_doses",
                      "pct_one_dose", "pct_two_doses", "daily_doses"))
@@ -69,6 +71,8 @@ get_state_vax <- function(
   if (keep_nat == FALSE & raw == FALSE) {
     d <- d[place != "India"]
   }
+
+  cli::cli_alert_info(paste0("Data through ", d[, max(date)]))
 
   return(d)
 

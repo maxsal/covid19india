@@ -62,7 +62,7 @@ get_all_data <- function(
 
     d <- data.table::rbindlist(list(
         get_nat_counts(mohfw = TRUE),
-        get_state_counts(mohfw = TRUE)[, !c("source")]
+        get_state_counts(mohfw = TRUE)
       ), fill = TRUE)
 
     d <- data.table::merge.data.table(
@@ -94,6 +94,8 @@ get_all_data <- function(
     d <- d[place != "India"]
 
   }
+
+  suppressWarnings({ d <- d[place != "Haryana***"] })
 
   if (covind19_name_scheme == TRUE) {
 

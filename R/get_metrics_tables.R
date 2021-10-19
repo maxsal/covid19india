@@ -17,13 +17,13 @@
 #' tabs$full
 #' }
 
-get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
+get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
 
   cli::cli_alert_info("getting data...")
 
   set.seed(set_seed <- seed)
   today           <- Sys.Date()
-  all_data <- get_all_data(corr_check = corr_check)[date <= today][, !c("raw_timestamp", "pull_time")]
+  all_data <- get_all_data(corr_check = corr_check)[date <= today]
   # dat             <- get_all_data(corr_check = corr_check)[date <= today]
   cfr1            <- unique(get_cfr(all_data))[place == "National estimate", place := "India"][]
   r_est           <- get_r_est(all_data[!is.na(r_est)])
@@ -35,7 +35,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
   use_abbrevs <- tolower(unique(all_data[abbrev != "la", abbrev]))
 
   # vax data ----------
-  vax_dat <- get_state_vax()[date <= today][, !c("source", "raw_timestamp", "pull_time")]
+  vax_dat <- get_state_vax()[date <= today]
   setnames(vax_dat, c("total_doses", "pct_one_dose", "pct_two_doses", "daily_doses"), c("total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))
 
   vax_dat <- vax_dat[!is.na(total_vacc)][, .SD[date == max(date)], by = "place"]
@@ -208,7 +208,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
   cli::cli_alert_success("full table made")
 
   # new table
-  point_in_time <- tib[, !c("total cases", "total deaths", "TPR", "CFR",
+  point_in_time <- tib[, !c("total cases", "total deaths", "CFR",
                             "Total doses", "% pop. with two shots",
                             "% pop. with at least one shot")] %>%
     gt() %>%
@@ -310,8 +310,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
 
   cli::cli_alert_success("point-in-time table made")
 
-  cumulative <- tib[, !c("# daily new cases", "# daily new deaths", "7-day average daily TPR",
-                         "7-day average daily CFR", "R", "daily tests", "daily vaccine doses")] %>%
+  cumulative <- tib[, !c("# daily new cases", "# daily new deaths",
+                         "7-day average daily CFR", "R", "daily vaccine doses")] %>%
     gt() %>%
     # format table body text
     tab_style(
@@ -525,7 +525,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
     cli::cli_alert_success("full top 20 table made")
 
     # new table
-    t20_point_in_time <- t20_tib[, !c("total cases", "total deaths", "TPR", "CFR",
+    t20_point_in_time <- t20_tib[, !c("total cases", "total deaths", "CFR",
                                       "Total doses", "% pop. with two shots",
                                       "% pop. with at least one shot")] %>%
       gt() %>%
@@ -619,8 +619,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = TRUE) {
 
     cli::cli_alert_success("top 20 point-in-time table made")
 
-    t20_cumulative <- t20_tib[, !c("# daily new cases", "# daily new deaths", "7-day average daily TPR",
-                                   "7-day average daily CFR", "R", "daily tests", "daily vaccine doses")] %>%
+    t20_cumulative <- t20_tib[, !c("# daily new cases", "# daily new deaths",
+                                   "7-day average daily CFR", "R", "daily vaccine doses")] %>%
       gt() %>%
       # format table body text
       tab_style(

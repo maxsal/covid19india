@@ -5,6 +5,7 @@
 #' @param mohfw switch to mohfw default is `TRUE`
 #' @return Pulls the time-series case, death, and recovered data directly from covid19india.org.
 #' @import data.table
+#' @importFrom cli cli_alert_info
 #' @importFrom janitor clean_names
 #' @export
 #' @examples
@@ -58,8 +59,8 @@ get_nat_counts <- function(
                showProgress = FALSE, fill = TRUE)
 
     setnames(d,
-             old = c("State", "Date", "Cases", "Recovered", "Deaths", "Active", "source"),
-             new = c("place", "date", "total_cases", "total_recovered", "total_deaths", "total_active", "source"))
+             old = c("State", "Date", "Cases", "Recovered", "Deaths", "Active"),
+             new = c("place", "date", "total_cases", "total_recovered", "total_deaths", "total_active"))
 
     d <- d[, date := as.Date(date, "%d/%m/%Y")]
 
@@ -75,12 +76,18 @@ get_nat_counts <- function(
 
     d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")[daily_cases < 0, daily_cases := 0][daily_deaths < 0 , daily_deaths := 0][daily_recovered < 0, daily_recovered := 0][]
 
+    d <- d[date >= "2021-10-10" & daily_cases < 0, daily_cases := 0]
+    d <- d[date >= "2021-10-10" & daily_deaths < 0, daily_deaths := 0]
+    d <- d[date >= "2021-10-10" & daily_recovered < 0, daily_recovered := 0]
+
     setcolorder(d,
                 neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
 
     setkeyv(d, cols = c("place", "date"))
 
   }
+
+  cli::cli_alert_info(paste0("Data through ", d[, max(date)]))
 
   return(d)
 
