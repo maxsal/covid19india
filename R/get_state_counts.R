@@ -50,6 +50,8 @@ get_state_counts <- function(
 
       d <- data.table::merge.data.table(d, covid19india::pop[, !c("population")], by = "abbrev", all.x = TRUE)[, !c("abbrev")]
 
+      suppressWarnings({ d <- d[!(place %in% c("Haryana***", "Kerala***"))] })
+
       setkeyv(d, cols = c("place", "date"))
       setcolorder(d, neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
 
@@ -110,6 +112,8 @@ get_state_counts <- function(
     suppressWarnings({ d <- d[place == "Puducherry", place := "Pondicherry"]})
 
     # d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")[daily_cases < 0, daily_cases := 0][daily_deaths < 0 , daily_deaths := 0][daily_recovered < 0, daily_recovered := 0][]
+
+    suppressWarnings({ d <- d[!(place %in% c("Haryana***", "Kerala***"))] })
 
     setcolorder(d,
                 neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))

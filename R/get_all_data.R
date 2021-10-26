@@ -95,7 +95,7 @@ get_all_data <- function(
 
   }
 
-  suppressWarnings({ d <- d[place != "Haryana***"] })
+  # suppressWarnings({ d <- d[!(place %in% c("Haryana***", "Kerala***"))] })
 
   if (covind19_name_scheme == TRUE) {
 
