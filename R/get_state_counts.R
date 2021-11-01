@@ -110,6 +110,7 @@ get_state_counts <- function(
     d <- d[date >= "2021-10-10" & daily_recovered < 0, daily_recovered := 0]
 
     suppressWarnings({ d <- d[place == "Puducherry", place := "Pondicherry"]})
+    suppressWarnings({ d <- d[place != "Haryana***"]})
 
     d <- d[place == "Kerala***", place := "Kerala"][]
 
