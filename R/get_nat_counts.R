@@ -75,7 +75,7 @@ get_nat_counts <- function(
       ][]
 
     # d <- d[daily_cases < 0, daily_cases := NA][daily_deaths < 0, daily_deaths := NA][daily_recovered < 0, daily_recovered := NA][order(date), c("daily_cases", "daily_deaths", "daily_recovered") := lapply(.SD, nafill, type = "locf"), .SDcols = c("daily_cases", "daily_deaths", "daily_recovered")][]
-    d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")[daily_cases < 0, daily_cases := 0][daily_deaths < 0 , daily_deaths := 0][daily_recovered < 0, daily_recovered := 0][order(date), c("daily_cases", "daily_deaths", "daily_recovered") := lapply(.SD, nafill, type = "locf"), .SDcols = c("daily_cases", "daily_deaths", "daily_recovered")][]
+    d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")[daily_cases < 0, daily_cases := NA][daily_deaths < 0 , daily_deaths := NA][daily_recovered < 0, daily_recovered := NA][order(date), c("daily_cases", "daily_deaths", "daily_recovered") := lapply(.SD, nafill, type = "locf"), .SDcols = c("daily_cases", "daily_deaths", "daily_recovered")][]
 
     d <- d[date >= "2021-10-10" & daily_cases < 0, daily_cases := 0]
     d <- d[date >= "2021-10-10" & daily_deaths < 0, daily_deaths := 0]

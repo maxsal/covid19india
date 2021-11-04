@@ -25,7 +25,7 @@ check_for_data_correction <- function(dat, var = "daily_cases", magnitude = 10,
 
   } else {
 
-    dat[times_loc]
+    dat[!times_loc, daily_cases := NA]
 
   }
 
