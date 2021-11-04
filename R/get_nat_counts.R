@@ -17,7 +17,7 @@
 get_nat_counts <- function(
   path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw        = FALSE,
-  corr_check = FALSE,
+  corr_check = TRUE,
   mohfw      = TRUE
 ) {
 
