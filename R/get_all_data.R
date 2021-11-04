@@ -37,7 +37,7 @@ get_all_data <- function(
 
   d <- data.table::merge.data.table(
     d,
-    get_r0(dat = d, corr_check = corr_check)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+    get_r0(dat = d, corr_check = FALSE)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
     by    = c("place", "date"),
     all.x = TRUE
   )
@@ -67,7 +67,7 @@ get_all_data <- function(
 
     d <- data.table::merge.data.table(
       d,
-      get_r0(dat = d, corr_check = corr_check)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+      get_r0(dat = d, corr_check = FALSE)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
       by    = c("place", "date"),
       all.x = TRUE
     )
