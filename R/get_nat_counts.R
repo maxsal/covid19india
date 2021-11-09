@@ -40,20 +40,23 @@ get_nat_counts <- function(
 
       setkeyv(d, cols = c("place", "date"))
 
-    }
+      if (corr_check == TRUE) {
 
-    if (corr_check == TRUE) {
-
-      if (raw == TRUE) {
-        stop("`raw` must be FALSE to use `corr_check = TRUE` argument")
-      } else {
         d <- covid19india::check_for_data_correction(dat = d, var = "daily_cases")
+
       }
+
+    } else {
+
+      if(corr_check == TRUE) {
+
+        stop("`raw` must be FALSE to use `corr_check = TRUE` argument")
+
+      }
+
     }
 
-  }
-
-  if (mohfw == TRUE) {
+  } else if (mohfw == TRUE) {
 
     d <- fread("https://raw.githubusercontent.com/umich-cphds/cov-ind-19-data/master/source_data/source_data_latest.csv",
                showProgress = FALSE, fill = TRUE)
