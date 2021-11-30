@@ -82,7 +82,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
         `% pop. with at least one shot`)
   ]
 
-  tib <- unique(tib)
+  tib <- unique(tib)[!grepl("\\*\\*", tib$Location),]
 
   source_note_text <- glue::glue(
     "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
