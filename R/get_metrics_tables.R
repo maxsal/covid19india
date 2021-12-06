@@ -85,7 +85,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
   tib <- unique(tib)[!grepl("\\*\\*", tib$Location),]
 
   source_note_text <- glue::glue(
-    "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
+    "**\uA9 COV-IND-19 Study Group**<br>**Source data:** Up to 10/17/2021: covid19india.org. After 10/17/2021: count data (mohfw.gov.in), vaccine data (cowin.gov.in)<br>
       **Notes:** Cells highlighted in green indicates good performance for given metric while red indicates need for improvement.
       Only states/union territories with the highest cumulative case counts as of {format(today, '%B %e')} are shown.
       States are omitted if they have missing case count data.
@@ -402,7 +402,7 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
     t20_tib <- data.table::merge.data.table(tib, covid19india::pop[, !c("population")], by.x = "Location", by.y = "place")[abbrev %in% unique(c(top20, "tt"))][, !c("abbrev")][order(-`total cases`)]
 
     source_note_text <- glue(
-      "**\uA9 COV-IND-19 Study Group**<br>**Source data:** covid19india.org<br>
+      "**\uA9 COV-IND-19 Study Group**<br>**Source data:** Up to 10/17/2021: covid19india.org. After 10/17/2021: count data (mohfw.gov.in), vaccine data (cowin.gov.in)<br>
       **Notes:** Cells highlighted in green indicates good performance for given metric while red indicates need for improvement.
       Only states/union territories with the highest cumulative case counts as of {format(today, '%B %e')} are shown.
       States are omitted if they have missing case count data.
