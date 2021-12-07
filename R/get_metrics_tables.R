@@ -90,6 +90,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
       Only states/union territories with the highest cumulative case counts as of {format(today, '%B %e')} are shown.
       States are omitted if they have missing case count data.
       <br>
+      R values are not reliable when case counts are below 100.
+      <br>
       **Abbrev:** CFR, Case-fatality rate."
   )
 
@@ -406,6 +408,8 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
       **Notes:** Cells highlighted in green indicates good performance for given metric while red indicates need for improvement.
       Only states/union territories with the highest cumulative case counts as of {format(today, '%B %e')} are shown.
       States are omitted if they have missing case count data.
+      <br>
+      R values are not reliable when case counts are below 100.
       <br>
       **Abbrev:** CFR, Case-fatality rate."
     )
