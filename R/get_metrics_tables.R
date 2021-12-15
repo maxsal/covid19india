@@ -38,6 +38,29 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
   vax_dat <- get_state_vax()[date <= today]
   setnames(vax_dat, c("total_doses", "pct_one_dose", "pct_two_doses", "daily_doses"), c("total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))
 
+  test_data = (((fread("https://raw.githubusercontent.com/umich-cphds/cov-ind-19-data/master/source_data/count_test_vax_latest.csv") %>%
+    as.data.table())[,
+      .SD[date >= max(date) - 8 & date < max(date)], by = "place"
+      ][,
+      .SD, .SDcols = c("state", "date", "confirmed", "tested")
+      ][
+      , daily_confirmed := confirmed - shift(confirmed), by = "state"
+      ][
+      , daily_tested := tested - shift(tested), by = "state"
+      ][
+      , daily_tested := ifelse(daily_tested == 0 , NA, daily_tested), by = "state"
+      ] %>%
+    na.omit(cols = c("daily_confirmed")))[
+      , tpr7d := mean(daily_confirmed / daily_tested, na.rm = TRUE), by = "state"
+      ][,
+      .SD, .SDcols = c("state", "tpr7d", "tested")
+      ][
+      , .SD[nrow(.SD)],by = "state"
+      ][
+      , tpr7d := ifelse(is.nan(tpr7d), NA, tpr7d)
+      ]) %>%
+    data.table::setnames(old = c("state"), new = c("place"))
+
   vax_dat <- vax_dat[!is.na(total_vacc)][, .SD[date == max(date)], by = "place"]
 
   all_data <- unique(all_data[, .SD[date > max(as.Date(date) - 7)], by = "place"][, dailyCFR7 := daily_deaths / daily_cases][, dailyCFR7d := mean(dailyCFR7, na.rm = T), by = "place"][, .SD[date == max(date)], by = "place"][])[, .(place, dailyCFR7d, daily_cases, daily_deaths, total_cases, total_deaths)]
@@ -46,14 +69,17 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
 
   all_data <- data.table::merge.data.table(all_data, vax_dat, by = "place", all.x = TRUE)
 
+  all_data <- data.table::merge.data.table(all_data, test_data, by = "place")
+
   # table ----------
   tib <- cfr1[, .(place, cfr)]
 
   tib <- data.table::merge.data.table(tib, r_est[, .(place, r)], by = "place", all.x = TRUE)
 
   # tib <- data.table::merge.data.table(tib, extract_latest(tp, clmns = c("tpr")), by = "place", all.x = TRUE)
+  tib <- data.table::merge.data.table(tib, all_data[, .(place, tpr7d)], by = "place", all.x = TRUE)
 
-  tib <- data.table::merge.data.table(tib, all_data, by = "place", all.x = TRUE)[
+  tib <- data.table::merge.data.table(tib, all_data[, tpr7d := NULL], by = "place", all.x = TRUE)[
     , `:=` (
       perc_vaccine   = pct_at_least_one,
       total_vacc     = format(total_vacc, big.mark = ","),
@@ -61,23 +87,26 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
       daily_deaths   = format(daily_deaths, big.mark = ","),
       daily_vax_dose = format(daily_vax_dose, big.mark = ","),
       cases          = format(total_cases, big.mark = ","),
-      deaths         = format(total_deaths, big.mark = ",")
+      deaths         = format(total_deaths, big.mark = ","),
+      tested         = format(tested, big.mark = ",")
     )
   ][]
 
   setnames(tib,
-           old = c( "daily_cases", "daily_deaths", "dailyCFR7d", "r", "daily_vax_dose", "place", "cfr", "cases", "deaths", "perc_vaccine", "total_vacc", "pct_second", "pct_at_least_one"),
-           new = c("# daily new cases", "# daily new deaths",  "7-day average daily CFR", "R", "daily vaccine doses", "Location", "CFR", "total cases","total deaths",  "Percent with at least one dose", "Total doses", "% pop. with two shots", "% pop. with at least one shot"))
+           old = c( "daily_cases", "daily_deaths", "dailyCFR7d", "r", "tpr7d", "daily_vax_dose", "place", "cfr", "cases", "deaths", "perc_vaccine", "total_vacc", "pct_second", "pct_at_least_one", "tested"),
+           new = c("# daily new cases", "# daily new deaths",  "7-day average daily CFR", "R", "7-day average daily TPR", "daily vaccine doses", "Location", "CFR", "total cases","total deaths",  "Percent with at least one dose", "Total doses", "% pop. with two shots", "% pop. with at least one shot", "total tests"))
 
   tib <- tib[order(-`total_cases`)][
     , `:=` (
       `7-day average daily CFR`       = round(`7-day average daily CFR`, digits = 3),
+      `7-day average daily TPR (%)`       = round(`7-day average daily TPR`, digits = 6)*100,
       `% pop. with two shots`         = round(`% pop. with two shots`, digits = 2),
       `% pop. with at least one shot` = round(`% pop. with at least one shot`, digits = 2)
     )
   ][
     , .(`# daily new cases`, `# daily new deaths`, `7-day average daily CFR`,
-        Location, R, `daily vaccine doses`, CFR, `total cases`,
+        `7-day average daily TPR (%)`,
+        Location, R, `daily vaccine doses`, CFR, `total tests`, `total cases`,
         `total deaths`, `Total doses`, `% pop. with two shots`,
         `% pop. with at least one shot`)
   ]
@@ -125,6 +154,10 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
       columns  = c(R),
       decimals = 2
     ) %>%
+    fmt_number(
+      columns  = c(`7-day average daily TPR (%)`),
+      decimals = 3
+    ) %>%
     # random formatting
     tab_options(
       column_labels.border.top.style    = "none",
@@ -156,11 +189,11 @@ get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
     tab_spanner(
       label   = "Point in time metrics",
       columns = c(`# daily new cases`, `# daily new deaths`,
-                  `7-day average daily CFR`, R, `daily vaccine doses`)
+                  `7-day average daily CFR`, R, `7-day average daily TPR (%)`, `daily vaccine doses`)
     ) %>%
     tab_spanner(
       label   = "Cumulative metrics",
-      columns = c(`total cases`, `total deaths`, CFR,
+      columns = c(`total cases`, `total deaths`, CFR, `total tests`,
                   `Total doses`, `% pop. with two shots`, `% pop. with at least one shot`)
     ) %>%
     cols_move_to_start((Location)) %>%
