@@ -1,5 +1,6 @@
 #' Helper function for calculating R_0 - data.table style
 #' @param x Input dataset
+#' @param incubation_days Number of days from infection to symptoms
 #' @return Pulls the time-series state-level testing data directly from covid19india.org.
 #' @keywords internal
 #' @import data.table
@@ -11,7 +12,7 @@
 #' }
 #'
 
-estR0_out <- function(x) {
+estR0_out <- function(x, incubation_days = 3) {
 
   t_start   <- seq(2, nrow(x) - 4)
   t_end     <- t_start + 4
@@ -20,7 +21,7 @@ estR0_out <- function(x) {
     incid = x$daily_cases,
     method = "parametric_si",
     config = EpiEstim::make_config(list(
-      mean_si             = 7,
+      mean_si             = incubation_days,
       std_si              = 4.5,
       si_parametric_distr = "G",
       t_start             = t_start,
@@ -43,6 +44,7 @@ estR0_out <- function(x) {
 #' @param total_filter Threshold for minimum total cases reported to date. Default = `50`.
 #' @param min_date Threshold for earliest date to report R_0. Default = `"2020-03-23"`.
 #' @param corr_check Check for data corrections of X-times magnitude. Default is `FALSE`
+#' @param inc_days Number of days from infection to symptoms
 #' @return Pulls the time-series state-level testing data directly from covid19india.org. Expects columns named `place`, `daily_cases`, and `total_cases`. Can specify corresponding variables through other arguments.
 #' @import data.table
 #' @importFrom janitor clean_names
@@ -59,7 +61,8 @@ get_r0 <- function(
   daily_filter = 0,
   total_filter = 50,
   min_date     = "2020-03-23",
-  corr_check   = FALSE
+  corr_check   = FALSE,
+  inc_days     = 3
   ) {
 
   if(!is.null(corr_check) & is.logical(corr_check)) {
@@ -88,7 +91,7 @@ get_r0 <- function(
     stats::na.omit(
     data.table::rbindlist(
       lapply(tmp_dat[, unique(place)],
-             function(x) estR0_out(tmp_dat[place == x]))
+             function(x) estR0_out(tmp_dat[place == x], incubation_days = inc_days))
       )[date >= min_date]
     )
     )

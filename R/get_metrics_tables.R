@@ -2,6 +2,7 @@
 #' @param seed set seed
 #' @param top20 Vector of state abbreviations for top 20 table
 #' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
+#' @param inc_days Number of days from infection to symptoms
 #' @return Creates metrics tables for use in covind19.org
 #' @import gt
 #' @import data.table
@@ -17,13 +18,13 @@
 #' tabs$full
 #' }
 
-get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE) {
+get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE, inc_days = 3) {
 
   cli::cli_alert_info("getting data...")
 
   set.seed(set_seed <- seed)
   today           <- Sys.Date()
-  all_data <- get_all_data(corr_check = corr_check)[date <= today]
+  all_data        <- get_all_data(corr_check = corr_check, inc_days = inc_days)[date <= today]
   # dat             <- get_all_data(corr_check = corr_check)[date <= today]
   cfr1            <- unique(get_cfr(all_data))[place == "National estimate", place := "India"][]
   r_est           <- get_r_est(all_data[!is.na(r_est)])

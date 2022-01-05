@@ -8,7 +8,8 @@ get_all_data(
   keep_nat = TRUE,
   covind19_name_scheme = FALSE,
   corr_check = TRUE,
-  mohfw = TRUE
+  mohfw = TRUE,
+  inc_days = 3
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ get_all_data(
 \item{corr_check}{Check for data corrections of X-times magnitude. Default is \code{TRUE}}
 
 \item{mohfw}{mohfw switch to mohfw. Defauly is \code{FALSE} - will default to \code{TRUE} in future}
+
+\item{inc_days}{Number of days from infection to symptoms}
 }
 \value{
 Pulls the district-level time-series case, death, and recovered data directly from \href{https://www.covid19india.org}{\code{covid19india.org}}.

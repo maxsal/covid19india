@@ -4,10 +4,12 @@
 \alias{estR0_out}
 \title{Helper function for calculating R_0 - data.table style}
 \usage{
-estR0_out(x)
+estR0_out(x, incubation_days = 3)
 }
 \arguments{
 \item{x}{Input dataset}
+
+\item{incubation_days}{Number of days from infection to symptoms}
 }
 \value{
 Pulls the time-series state-level testing data directly from covid19india.org.

@@ -9,7 +9,8 @@ get_r0(
   daily_filter = 0,
   total_filter = 50,
   min_date = "2020-03-23",
-  corr_check = FALSE
+  corr_check = FALSE,
+  inc_days = 3
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ get_r0(
 \item{min_date}{Threshold for earliest date to report R_0. Default = \code{"2020-03-23"}.}
 
 \item{corr_check}{Check for data corrections of X-times magnitude. Default is \code{FALSE}}
+
+\item{inc_days}{Number of days from infection to symptoms}
 }
 \value{
 Pulls the time-series state-level testing data directly from covid19india.org. Expects columns named \code{place}, \code{daily_cases}, and \code{total_cases}. Can specify corresponding variables through other arguments.

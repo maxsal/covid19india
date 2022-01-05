@@ -3,6 +3,7 @@
 #' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](https://umich-biostatistics.shinyapps.io/covid19/) application
 #' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
 #' @param mohfw mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
+#' @param inc_days Number of days from infection to symptoms
 #' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
 #' @import data.table
 #' @importFrom cli cli_alert_warning
@@ -18,7 +19,8 @@ get_all_data <- function(
   keep_nat             = TRUE,
   covind19_name_scheme = FALSE,
   corr_check           = TRUE,
-  mohfw                = TRUE
+  mohfw                = TRUE,
+  inc_days             = 3
 ) {
 
   if (mohfw == FALSE) {
@@ -37,7 +39,7 @@ get_all_data <- function(
 
   d <- data.table::merge.data.table(
     d,
-    get_r0(dat = d, corr_check = FALSE)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+    get_r0(dat = d, corr_check = FALSE, inc_days = inc_days)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
     by    = c("place", "date"),
     all.x = TRUE
   )
@@ -67,7 +69,7 @@ get_all_data <- function(
 
     d <- data.table::merge.data.table(
       d,
-      get_r0(dat = d, corr_check = FALSE)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+      get_r0(dat = d, corr_check = FALSE, inc_days = inc_days)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
       by    = c("place", "date"),
       all.x = TRUE
     )
