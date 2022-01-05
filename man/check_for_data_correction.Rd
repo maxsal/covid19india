@@ -6,9 +6,10 @@
 \usage{
 check_for_data_correction(
   dat,
-  var = "daily_cases",
+  var,
   magnitude = 10,
-  min_count = 10
+  min_count = 10,
+  fill_locf = TRUE
 )
 }
 \arguments{

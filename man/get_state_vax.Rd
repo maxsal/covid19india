@@ -8,7 +8,7 @@ get_state_vax(
   path = "https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv",
   raw = FALSE,
   keep_nat = TRUE,
-  mohfw = FALSE
+  mohfw = TRUE
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ get_state_vax(
 
 \item{keep_nat}{Keep national level data? Default is TRUE}
 
-\item{mohfw}{switch to mohfw. Defauly is \code{FALSE} - will default to \code{TRUE} in future}
+\item{mohfw}{switch to mohfw. default is \code{TRUE}}
 }
 \value{
 Pulls the time-series state-level vaccine data directly from covid19india.org.

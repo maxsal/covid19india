@@ -9,7 +9,7 @@ get_state_counts(
   raw = FALSE,
   keep_nat = FALSE,
   corr_check = FALSE,
-  mohfw = FALSE
+  mohfw = TRUE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ get_state_counts(
 
 \item{corr_check}{Check for data correction. Default is \code{FALSE}}
 
-\item{mohfw}{switch to mohfw. Defauly is \code{FALSE} - will default to \code{TRUE} in future}
+\item{mohfw}{switch to mohfw default is \code{TRUE}}
 }
 \value{
 Pulls the time-series case, death, and recovered data directly from covid19india.org.

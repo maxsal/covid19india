@@ -4,7 +4,7 @@
 \alias{get_metrics_tables}
 \title{Create metrics tables}
 \usage{
-get_metrics_tables(seed = 46342, top20 = NULL, corr_check = TRUE)
+get_metrics_tables(seed = 46342, top20 = NULL, corr_check = FALSE)
 }
 \arguments{
 \item{seed}{set seed}

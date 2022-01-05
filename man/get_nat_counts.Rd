@@ -7,8 +7,8 @@
 get_nat_counts(
   path = "https://api.covid19india.org/csv/latest/case_time_series.csv",
   raw = FALSE,
-  corr_check = FALSE,
-  mohfw = FALSE
+  corr_check = TRUE,
+  mohfw = TRUE
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ get_nat_counts(
 
 \item{corr_check}{Check for data correction. Default is \code{FALSE}}
 
-\item{mohfw}{switch to mohfw. Defauly is \code{FALSE} - will default to \code{TRUE} in future}
+\item{mohfw}{switch to mohfw default is \code{TRUE}}
 }
 \value{
 Pulls the time-series case, death, and recovered data directly from covid19india.org.

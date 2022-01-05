@@ -8,7 +8,7 @@ get_all_data(
   keep_nat = TRUE,
   covind19_name_scheme = FALSE,
   corr_check = TRUE,
-  mohfw = FALSE
+  mohfw = TRUE
 )
 }
 \arguments{
