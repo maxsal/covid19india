@@ -87,13 +87,42 @@ get_r0 <- function(
 
   }
 
+  # 2020
   suppressWarnings(
-    stats::na.omit(
-    data.table::rbindlist(
-      lapply(tmp_dat[, unique(place)],
-             function(x) estR0_out(tmp_dat[place == x], incubation_days = inc_days))
+    t2020 <- stats::na.omit(
+      data.table::rbindlist(
+        lapply(tmp_dat[date <= "2020-12-31"][, unique(place)],
+               function(x) estR0_out(tmp_dat[date <= "2020-12-31"][place == x], incubation_days = 7))
       )[date >= min_date]
     )
+  )
+
+  # 2021
+  suppressWarnings(
+    t2021 <- stats::na.omit(
+      data.table::rbindlist(
+        lapply(tmp_dat[date <= as.Date("2021-12-31")][, unique(place)],
+               function(x) estR0_out(tmp_dat[date <= as.Date("2021-12-31")][place == x], incubation_days = 5))
+      )[date >= "2021-01-01"]
     )
+  )
+
+  # 2022
+  suppressWarnings(
+    t2022 <- stats::na.omit(
+    data.table::rbindlist(
+      lapply(tmp_dat[, unique(place)],
+             function(x) estR0_out(tmp_dat, incubation_days = inc_days))
+      )[date >= "2022-01-01"]
+    )
+    )
+
+  return(
+    rbindlist(
+      list(
+        t2020, t2021, t2022
+      )
+    )
+  )
 
 }
