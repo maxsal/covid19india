@@ -10,8 +10,8 @@
 
 get_r_est <- function(x) {
 
-  x[x[, .I[(.N - 6):.N], by = "place"]$V1][, .(
-    r = mean(r_est, na.rm = TRUE),
+  x[order(date), .SD[ifelse(.N-6 < 1, 1, .N-6):.N], by = "place"][, .(
+    r     = mean(r_est, na.rm = TRUE),
     lower = mean(r_lower, na.rm = TRUE),
     upper = mean(r_upper, na.rm = TRUE)),
     .(place)]

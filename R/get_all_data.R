@@ -2,6 +2,7 @@
 #' @param keep_nat Keep the national data as well. Default is `FALSE`
 #' @param covind19_name_scheme Variable naming scheme used for development of [`covind19.org`](https://umich-biostatistics.shinyapps.io/covid19/) application
 #' @param corr_check Check for data corrections of X-times magnitude. Default is `TRUE`
+#' @param mohfw mohfw switch to mohfw. Defauly is `FALSE` - will default to `TRUE` in future
 #' @return Pulls the district-level time-series case, death, and recovered data directly from [`covid19india.org`](https://www.covid19india.org).
 #' @import data.table
 #' @importFrom cli cli_alert_warning
@@ -16,9 +17,11 @@
 get_all_data <- function(
   keep_nat             = TRUE,
   covind19_name_scheme = FALSE,
-  corr_check           = TRUE
+  corr_check           = TRUE,
+  mohfw                = TRUE
 ) {
 
+  if (mohfw == FALSE) {
   d <- data.table::merge.data.table(
     data.table::rbindlist(list(
       get_nat_counts(),
@@ -34,7 +37,7 @@ get_all_data <- function(
 
   d <- data.table::merge.data.table(
     d,
-    get_r0(dat = d, corr_check = corr_check)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+    get_r0(dat = d, corr_check = FALSE)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
     by    = c("place", "date"),
     all.x = TRUE
   )
@@ -53,11 +56,46 @@ get_all_data <- function(
     all.x = TRUE
   )
 
+  }
+
+  if (mohfw == TRUE) {
+
+    d <- data.table::rbindlist(list(
+        get_nat_counts(mohfw = TRUE),
+        get_state_counts(mohfw = TRUE)
+      ), fill = TRUE)
+
+    d <- data.table::merge.data.table(
+      d,
+      get_r0(dat = d, corr_check = FALSE)[, .(place, date, r_est = r, r_lower = lower, r_upper = upper)],
+      by    = c("place", "date"),
+      all.x = TRUE
+    )
+
+    d <- data.table::merge.data.table(
+      d,
+      unique(covid19india::pop[, .(place, abbrev)][, utils::head(.SD, 1), by = "place"]),
+      by    = "place",
+      all.x = TRUE
+    )
+
+    d <- data.table::merge.data.table(
+      d,
+      base::suppressMessages(get_state_vax(mohfw = TRUE)[, !c("source")]),
+      by = c("place", "date"),
+      all.x = TRUE
+    )
+
+  }
+
+
   if (keep_nat == FALSE) {
 
     d <- d[place != "India"]
 
   }
+
+  # suppressWarnings({ d <- d[!(place %in% c("Haryana***", "Kerala***"))] })
 
   if (covind19_name_scheme == TRUE) {
 

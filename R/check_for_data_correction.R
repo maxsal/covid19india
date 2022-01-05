@@ -11,8 +11,8 @@
 #' check_for_data_correction(dat = get_nat_counts, var = "daily_cases", magnitude = 10)
 #' }
 
-check_for_data_correction <- function(dat, var = "daily_cases", magnitude = 10,
-                                      min_count = 10) {
+check_for_data_correction <- function(dat, var, magnitude = 10,
+                                      min_count = 10, fill_locf = TRUE) {
 
   v     <- dat[, var, with = FALSE]
   v_lag <- data.table::shift(v)[[1]]
@@ -25,7 +25,19 @@ check_for_data_correction <- function(dat, var = "daily_cases", magnitude = 10,
 
   } else {
 
-    dat[times_loc]
+    dat <- dat[!times_loc, daily_cases := NA][
+      !times_loc, daily_deaths := NA
+      ][
+        !times_loc, daily_recovered := NA
+      ][]
+
+    if(fill_locf == TRUE) {
+
+      #setnafill(dat, "locf", cols = eval(var))
+
+    }
+
+    dat
 
   }
 
