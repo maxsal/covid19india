@@ -112,7 +112,7 @@ get_r0 <- function(
     t2022 <- stats::na.omit(
     data.table::rbindlist(
       lapply(tmp_dat[, unique(place)],
-             function(x) estR0_out(tmp_dat, incubation_days = inc_days))
+             function(x) estR0_out(tmp_dat[place == x], incubation_days = inc_days))
       )[date >= "2022-01-01"]
     )
     )
