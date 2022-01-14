@@ -123,6 +123,6 @@ get_state_counts <- function(
 
   cli::cli_alert_info(paste0("Data through ", d[, max(date)]))
 
-  return(d)
+  return(d[place != ""][])
 
 }
