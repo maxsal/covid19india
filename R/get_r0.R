@@ -62,7 +62,7 @@ get_r0 <- function(
   total_filter = 50,
   min_date     = "2020-03-23",
   corr_check   = FALSE,
-  inc_days     = 3
+  inc_days     = c(7, 5, 3)
   ) {
 
   if(!is.null(corr_check) & is.logical(corr_check)) {
@@ -92,7 +92,7 @@ get_r0 <- function(
     t2020 <- stats::na.omit(
       data.table::rbindlist(
         lapply(tmp_dat[date <= "2020-12-31"][, unique(place)],
-               function(x) estR0_out(tmp_dat[date <= "2020-12-31"][place == x], incubation_days = 7))
+               function(x) estR0_out(tmp_dat[date <= "2020-12-31"][place == x], incubation_days = inc_days[1]))
       )[date >= min_date]
     )
   )
@@ -102,7 +102,7 @@ get_r0 <- function(
     t2021 <- stats::na.omit(
       data.table::rbindlist(
         lapply(tmp_dat[date <= as.Date("2021-12-31")][, unique(place)],
-               function(x) estR0_out(tmp_dat[date <= as.Date("2021-12-31")][place == x], incubation_days = 5))
+               function(x) estR0_out(tmp_dat[date <= as.Date("2021-12-31")][place == x], incubation_days = inc_days[2]))
       )[date >= "2021-01-01"]
     )
   )
@@ -112,7 +112,7 @@ get_r0 <- function(
     t2022 <- stats::na.omit(
     data.table::rbindlist(
       lapply(tmp_dat[, unique(place)],
-             function(x) estR0_out(tmp_dat[place == x], incubation_days = inc_days))
+             function(x) estR0_out(tmp_dat[place == x], incubation_days = inc_days[3]))
       )[date >= "2022-01-01"]
     )
     )
