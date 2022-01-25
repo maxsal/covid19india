@@ -20,7 +20,7 @@ get_all_data <- function(
   covind19_name_scheme = FALSE,
   corr_check           = TRUE,
   mohfw                = TRUE,
-  inc_days             = 3
+  inc_days             = c(7, 5, 3)
 ) {
 
   if (mohfw == FALSE) {
