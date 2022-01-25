@@ -18,7 +18,7 @@
 #' tabs$full
 #' }
 
-get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE, inc_days = 3) {
+get_metrics_tables <- function(seed = 46342, top20 = NULL, corr_check = FALSE, inc_days = c(7, 5, 3)) {
 
   cli::cli_alert_info("getting data...")
 
