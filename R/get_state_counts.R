@@ -15,11 +15,11 @@
 #' }
 
 get_state_counts <- function(
-  path       = "https://api.covid19india.org/csv/latest/state_wise_daily.csv",
+  path       = "https://data.covid19bharat.org/csv/latest/state_wise_daily.csv",
   raw        = FALSE,
   keep_nat   = FALSE,
   corr_check = FALSE,
-  mohfw      = TRUE
+  mohfw      = FALSE
 ) {
 
   if (mohfw == FALSE) {

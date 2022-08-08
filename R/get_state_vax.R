@@ -14,10 +14,10 @@
 #' }
 
 get_state_vax <- function(
-  path       = "https://api.covid19india.org/csv/latest/vaccine_doses_statewise_v2.csv",
+  path       = "https://data.covid19bharat.org/csv/latest/vaccine_doses_statewise_v2.csv",
   raw        = FALSE,
   keep_nat   = TRUE,
-  mohfw      = TRUE
+  mohfw      = FALSE
 ) {
 
   if (mohfw == FALSE) {

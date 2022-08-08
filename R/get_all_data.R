@@ -16,18 +16,20 @@
 #' }
 
 get_all_data <- function(
-  keep_nat             = TRUE,
-  covind19_name_scheme = FALSE,
-  corr_check           = TRUE,
-  mohfw                = TRUE,
-  inc_days             = c(7, 5, 3)
+    nat_count_path     = "https://data.covid19bharat.org/csv/latest/case_time_series.csv",
+    state_count_path   = "https://data.covid19bharat.org/csv/latest/state_wise_daily.csv",
+    keep_nat             = TRUE,
+    covind19_name_scheme = FALSE,
+    corr_check           = TRUE,
+    mohfw                = FALSE,
+    inc_days             = c(7, 5, 3)
 ) {
 
   if (mohfw == FALSE) {
   d <- data.table::merge.data.table(
     data.table::rbindlist(list(
-      get_nat_counts(),
-      get_state_counts()
+      get_nat_counts(path = nat_count_path, mohfw = FALSE),
+      get_state_counts(path = state_count_path, mohfw = FALSE)
     ), fill = TRUE),
     data.table::rbindlist(list(
       get_nat_tests(),
@@ -108,6 +110,8 @@ get_all_data <- function(
                      "pct_two_doses", "daily_doses"),
              new = c("cases", "recovered", "deaths", "total_vacc", "pct_at_least_one", "pct_second", "daily_vax_dose"))
   }
+
+  d <- d[date <= Sys.Date() - 1]
 
   return(d)
 

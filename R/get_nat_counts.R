@@ -15,10 +15,10 @@
 #'
 
 get_nat_counts <- function(
-  path       = "https://api.covid19india.org/csv/latest/case_time_series.csv",
+  path       = "https://data.covid19bharat.org/csv/latest/case_time_series.csv",
   raw        = FALSE,
-  corr_check = TRUE,
-  mohfw      = TRUE
+  corr_check = FALSE,
+  mohfw      = FALSE
 ) {
 
   if (mohfw == FALSE) {
@@ -27,15 +27,17 @@ get_nat_counts <- function(
 
     if (raw == FALSE) {
 
-      d <- d[, !c("Date")]
-      setnames(d, names(d), janitor::make_clean_names(names(d)))
-      setnames(d,
-               c("date_ymd", "daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
-               c("date", "daily_cases", "total_cases", "daily_deaths", "total_deaths"))
+      d <- d[, date := as.Date(Date, "%e %B %Y")][]
+      d <- d[, !c("Date", "Date_YMD")]
 
-      d <- d[, `:=` (place = "India", date = as.Date(date))]
+      data.table::setnames(d, names(d), janitor::make_clean_names(names(d)))
+      data.table::setnames(d,
+               c("daily_confirmed", "total_confirmed", "daily_deceased", "total_deceased"),
+               c("daily_cases", "total_cases", "daily_deaths", "total_deaths"))
 
-      setcolorder(d,
+      d <- d[, `:=` (place = "India")][]
+
+      data.table::setcolorder(d,
                   neworder = c("place", "date", "daily_cases", "daily_recovered", "daily_deaths", "total_cases", "total_recovered", "total_deaths"))
 
       setkeyv(d, cols = c("place", "date"))

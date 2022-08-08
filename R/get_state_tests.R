@@ -11,7 +11,7 @@
 #' }
 
 get_state_tests <- function(
-  path       = "https://api.covid19india.org/csv/latest/statewise_tested_numbers_data.csv",
+  path       = "https://data.covid19bharat.org/csv/latest/statewise_tested_numbers_data.csv",
   raw        = FALSE
 ) {
 
@@ -30,6 +30,8 @@ get_state_tests <- function(
       d <- data.table::merge.data.table(d, unique(covid19india::pop[, !c("abbrev")]), all.x = TRUE, by = "place")[
         , ppt := total_tests / population
       ][, !c("population")][!(is.na(daily_tests) & is.na(total_tests) & is.na(ppt))]
+
+      d <- d[!place %in% c("haryana")]
 
       setkeyv(d, cols = c("place", "date"))
       setcolorder(d, c("place", "date", "daily_tests", "total_tests", "ppt"))
